@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { MapPin, Calendar, Users } from 'lucide-react';
+import { MapPin, Users } from 'lucide-react';
 import { fetchEvents } from '../api/events';
 
 const EventList: React.FC = () => {

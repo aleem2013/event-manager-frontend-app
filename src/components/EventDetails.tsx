@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { MapPin, Ticket, QrCode, Printer, Loader2 } from 'lucide-react';
+import { MapPin, Printer, Loader2 } from 'lucide-react';
 import { fetchEventDetails, createTicket } from '../api/events';
 import toast from 'react-hot-toast';
 
@@ -52,7 +52,7 @@ const EventDetails: React.FC = () => {
       // Hide loading overlay when mutation completes (success or error)
       setShowLoadingOverlay(false);
     },
-    onError: (error) => {
+    onError: () => {
       // Handle error case
       toast.error('Failed to create ticket. Please try again.');
     },

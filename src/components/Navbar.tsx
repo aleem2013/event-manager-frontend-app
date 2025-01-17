@@ -1,11 +1,10 @@
 // src/components/Navbar.tsx
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout, isAdmin } = useAuth();
-  const navigate = useNavigate();
 
   return (
     <nav className="bg-white shadow-lg">

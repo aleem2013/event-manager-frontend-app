@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Download, Printer } from 'lucide-react';
+import { ArrowLeft, Printer } from 'lucide-react';
 import { getTicketDetails } from '../api/events';
-import toast from 'react-hot-toast';
 
 const TicketDetails: React.FC = () => {
   const { eventId, ticketId } = useParams<{ eventId: string; ticketId: string }>();

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { QrScanner } from '@yudiel/react-qr-scanner';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import { markAttendance, getTicketDetails, getTicketDetailsByTicketId } from '../api/events';
+import { markAttendance, getTicketDetailsByTicketId } from '../api/events';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 
@@ -12,7 +12,7 @@ const ScanQR: React.FC = () => {
   const [currentTicketId, setCurrentTicketId] = useState<string | null>(null);
 
   // Query to fetch ticket details
-  const ticketQuery = useQuery({
+  /*const ticketQuery = useQuery({
     queryKey: ['ticket', currentTicketId],
     queryFn: async () => {
       if (!currentTicketId) return null;
@@ -26,8 +26,8 @@ const ScanQR: React.FC = () => {
       }
     },
     enabled: !!currentTicketId,
-  });
-
+  });*/
+  console.log(currentTicketId);
   const mutation = useMutation({
     mutationFn: markAttendance,
     onSuccess: () => {
