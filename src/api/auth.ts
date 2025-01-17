@@ -1,0 +1,28 @@
+import axios from 'axios';
+
+const API_URL = 'http://localhost:3000';
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface RegisterCredentials {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface AuthResponse {
+  access_token: string;
+}
+
+export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
+  const response = await axios.post(`${API_URL}/api/auth/login`, credentials);
+  return response.data;
+};
+
+export const register = async (credentials: RegisterCredentials): Promise<AuthResponse> => {
+  const response = await axios.post(`${API_URL}/api/auth/register`, credentials);
+  return response.data;
+};
