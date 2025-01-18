@@ -11,7 +11,7 @@ import TicketDetails from './components/TicketDetails';
 import Login from './components/Login';
 import Register from './components/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import WelcomeMessage from './components/WelcomeMessage';
 
 // Configure QueryClient with some defaults
@@ -25,6 +25,62 @@ const queryClient = new QueryClient({
   },
 });
 
+// Separate component for the app content to use hooks inside
+const AppContent: React.FC = () => {
+  const { isAuthenticated, user } = useAuth();
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <WelcomeMessage isAuthenticated={isAuthenticated} username={user?.name} />
+      <div className="container mx-auto px-4 py-8">
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={
+            <ProtectedRoute>
+              <EventList />
+            </ProtectedRoute>
+          } />
+          <Route path="/events/:id" element={
+            <ProtectedRoute>
+              <EventDetails />
+            </ProtectedRoute>
+          } />
+          <Route path="/events/:eventId/tickets/:ticketId" element={
+            <ProtectedRoute>
+              <TicketDetails />
+            </ProtectedRoute>
+          } />
+          <Route path="/create-event" element={
+            <ProtectedRoute requireAdmin={true}>
+              <CreateEvent />
+            </ProtectedRoute>
+          } />
+          <Route path="/scan" element={
+            <ProtectedRoute>
+              <ScanQR />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </div>
+      <Toaster />
+    </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </Router>
+    </QueryClientProvider>
+  );
+};
+/*
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -70,6 +126,6 @@ const App: React.FC = () => {
       </Router>
     </QueryClientProvider>
   );
-};
+}; */
 
 export default App;
