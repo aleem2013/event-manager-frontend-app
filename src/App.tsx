@@ -25,6 +25,7 @@ const queryClient = new QueryClient({
   },
 });
 
+
 // Separate component for the app content to use hooks inside
 const AppContent: React.FC = () => {
   const { isAuthenticated, user } = useAuth();

@@ -39,9 +39,9 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col justify-center py-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
           Sign in to your account
         </h2>
       </div>
@@ -95,7 +95,7 @@ const Login: React.FC = () => {
       </div>
     </div>
 
-    
+
     /*<div className="max-w-md mx-auto mt-8 bg-white rounded-lg shadow-md p-6">
       <h1 className="text-2xl font-bold mb-6">Login</h1>
       <form onSubmit={handleSubmit} className="space-y-4">

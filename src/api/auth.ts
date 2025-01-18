@@ -14,6 +14,7 @@ export interface RegisterCredentials {
 }
 
 export interface AuthResponse {
+  [x: string]: any;
   access_token: string;
 }
 
