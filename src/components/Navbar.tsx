@@ -47,7 +47,17 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Right side - Authentication */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4">
+          {isAuthenticated && isAdmin() && (
+            <div className="space-x-4">
+              <Link
+              to="/register"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+              >
+                Register
+              </Link> 
+            </div>
+          )}
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 {/* <span className="text-sm text-gray-600">
@@ -68,12 +78,12 @@ const Navbar: React.FC = () => {
                 >
                   Login
                 </Link>
-                <Link
+                {/* <Link
                   to="/register"
                   className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                 >
                   Register
-                </Link>
+                </Link> */}
               </div>
             )}
           </div>
