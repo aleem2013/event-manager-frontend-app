@@ -22,7 +22,7 @@ const TicketDetails: React.FC = () => {
   if (!ticket) return <div>Ticket not found</div>;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen p-4">
       <div className="max-w-2xl mx-auto">
         <button
           onClick={() => navigate(`/events/${eventId}`)}
@@ -35,7 +35,7 @@ const TicketDetails: React.FC = () => {
         {/* Printable Ticket Section */}
         <div 
           ref={printRef}
-          className="bg-white rounded-lg shadow-md p-8 print:shadow-none"
+          className="bg-white rounded-lg shadow-md p-4 md:p-8 print:shadow-none"
         >
           <h1 className="text-2xl font-bold mb-6 text-center">Event Ticket</h1>
           

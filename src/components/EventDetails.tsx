@@ -73,74 +73,78 @@ const EventDetails: React.FC = () => {
   return (
     <>
     {showLoadingOverlay && <LoadingOverlay />}
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h1 className="text-2xl font-bold mb-4">{event.title}</h1>
-      
-      <div className="flex items-center mb-4">
-        <MapPin className="h-5 w-5 mr-2 text-gray-500" />
-        <a 
-          href={event.googleMapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:underline"
-        >
-          {event.address}
-        </a>
-      </div>
+    <div className="min-h-screen p-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+            <h1 className="text-2xl font-bold mb-4 break-words">{event.title}</h1>
+            
+            <div className="flex items-center mb-4 flex-wrap">
+              <MapPin className="h-5 w-5 mr-2 text-gray-500 flex-shrink-0" />
+              <a 
+                href={event.googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline break-words"
+              >
+                {event.address}
+              </a>
+            </div>
 
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">QR Code</h2>
-        <img src={event.qrCodeUrl} alt="Event QR Code" className="w-48 h-48" />
-      </div>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold mb-2">QR Code</h2>
+              <img src={event.qrCodeUrl} alt="Event QR Code" className="w-48 h-48" />
+            </div>
 
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Tickets</h2>
-        <button
-          onClick={() => createTicketMutation.mutate(id!)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed inline-flex items-center space-x-2"
-        >
-          Generate New Ticket
-        </button>
-      </div>
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold mb-2">Tickets</h2>
+              <button
+                onClick={() => createTicketMutation.mutate(id!)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed inline-flex items-center space-x-2"
+              >
+                Generate New Ticket
+              </button>
+            </div>
 
-      <div className="mt-4">
-        <h3 className="text-lg font-semibold mb-2">Existing Tickets</h3>
-        <div className="grid gap-4">
-          {event.tickets?.map((ticket: any) => (
-            <div 
-              key={ticket.id} 
-              className="border rounded-md p-4 flex justify-between items-center hover:shadow-lg transition-all duration-200 hover:border-blue-500 cursor-pointer group"
-              onClick={() => navigate(`/events/${id}/tickets/${ticket.id}`)}
-            >
-              <div>
-                <span className="font-medium group-hover:text-blue-600 transition-colors">
-                  Ticket #{ticket.ticketNumber}
-                </span>
-                <div className="text-sm text-gray-500">
-                  {ticket.attended ? 'Attended' : 'Not attended'}
-                </div>
-              </div>
-              <div className="flex items-center">
-                {ticket.attended && (
-                  <span className="text-green-600 text-sm mr-4">
-                    {new Date(ticket.attendanceTimestamp).toLocaleString()}
-                  </span>
-                )}
-                <button 
-                  className="flex items-center px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/events/${id}/tickets/${ticket.id}`);
-                  }}
-                >
-                  <Printer className="h-4 w-4 mr-1" />
-                  View/Print
-                </button>
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold mb-2">Existing Tickets</h3>
+              <div className="grid gap-4">
+                {event.tickets?.map((ticket: any) => (
+                  <div 
+                    key={ticket.id} 
+                    className="border rounded-md p-4 flex justify-between items-center hover:shadow-lg transition-all duration-200 hover:border-blue-500 cursor-pointer group"
+                    onClick={() => navigate(`/events/${id}/tickets/${ticket.id}`)}
+                  >
+                    <div>
+                      <span className="font-medium group-hover:text-blue-600 transition-colors">
+                        Ticket #{ticket.ticketNumber}
+                      </span>
+                      <div className="text-sm text-gray-500">
+                        {ticket.attended ? 'Attended' : 'Not attended'}
+                      </div>
+                    </div>
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 w-full md:w-auto">
+                      {ticket.attended && (
+                        <span className="text-green-600 text-sm break-words">
+                          {new Date(ticket.attendanceTimestamp).toLocaleString()}
+                        </span>
+                      )}
+                      <button 
+                        className="flex items-center px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/events/${id}/tickets/${ticket.id}`);
+                        }}
+                      >
+                        <Printer className="h-4 w-4 mr-1" />
+                        View/Print
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
     </div>
     </>
   );
