@@ -12,6 +12,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
+import WelcomeMessage from './components/WelcomeMessage';
 
 // Configure QueryClient with some defaults
 const queryClient = new QueryClient({
@@ -31,6 +32,7 @@ const App: React.FC = () => {
         <AuthProvider>
             <div className="min-h-screen bg-gray-100">
               <Navbar />
+              <WelcomeMessage isAuthenticated={true} username="John" />
               <div className="container mx-auto px-4 py-8">
                 <Routes>
                   <Route path="/login" element={<Login />} />

@@ -1,10 +1,12 @@
 // src/components/Navbar.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout, isAdmin } = useAuth();
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
 
   return (
     <nav className="bg-white shadow-lg">
@@ -71,6 +73,7 @@ const Navbar: React.FC = () => {
                 </button>
               </div>
             ) : (
+              !isLoginPage && (
               <div className="space-x-4">
                 <Link
                   to="/login"
@@ -85,6 +88,7 @@ const Navbar: React.FC = () => {
                   Register
                 </Link> */}
               </div>
+              )
             )}
           </div>
         </div>
