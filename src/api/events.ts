@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://event-management-frontend-5e7ap9o9a.vercel.app';//'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL;// 'https://event-management-frontend-5e7ap9o9a.vercel.app';//'http://localhost:3000';
 
 export interface Event {
   id: string;
