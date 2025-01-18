@@ -11,8 +11,7 @@ import TicketDetails from './components/TicketDetails';
 import Login from './components/Login';
 import Register from './components/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import WelcomeMessage from './components/WelcomeMessage';
+import { AuthProvider } from './contexts/AuthContext';
 
 // Configure QueryClient with some defaults
 const queryClient = new QueryClient({

@@ -76,6 +76,8 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile menu button */}
+          {(
+            !isLoginPage && (
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
@@ -88,6 +90,7 @@ const Navbar: React.FC = () => {
               )}
             </button>
           </div>
+          ))}
         </div>
 
         {/* Mobile menu */}
