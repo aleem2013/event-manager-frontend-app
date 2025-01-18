@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Printer } from 'lucide-react';
+import { ArrowLeft, Printer, Share2 } from 'lucide-react';
 import { getTicketDetails } from '../api/events';
+import { toast } from 'react-hot-toast';
 
 const TicketDetails: React.FC = () => {
   const { eventId, ticketId } = useParams<{ eventId: string; ticketId: string }>();
@@ -16,6 +17,30 @@ const TicketDetails: React.FC = () => {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleShare = async () => {
+    if (!ticket) return;
+
+    const shareData = {
+      title: `Ticket for ${ticket.event.title}`,
+      text: `Join me at ${ticket.event.title}!\nLocation: ${ticket.event.address}\nTicket #${ticket.ticketNumber}`,
+      url: window.location.href
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback to copying the share text to clipboard
+        await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+        toast.success('Ticket details copied to clipboard!');
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name !== 'AbortError') {
+        toast.error('Failed to share ticket');
+      }
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -64,11 +89,11 @@ const TicketDetails: React.FC = () => {
           {/* Add scanning instructions */}
           <div className="mt-6 text-center text-gray-600 text-sm">
             {/* <p>Scan this QR code at the event to mark your attendance</p> */}
-            <p>Don't miss out! Scan the QR code at the venue to check in.</p>
+            <p>Don't miss out! Scan the QR code at the venue.</p>
           </div>
         </div>
 
-        {/* Print/Download Actions */}
+        {/* Print/Share/Download Actions */}
         <div className="mt-6 flex justify-center gap-4">
           <button
             onClick={handlePrint}
@@ -76,6 +101,13 @@ const TicketDetails: React.FC = () => {
           >
             <Printer className="h-4 w-4 mr-2" />
             Print Ticket
+          </button>
+          <button
+            onClick={handleShare}
+            className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+          >
+            <Share2 className="h-4 w-4 mr-2" />
+            Share
           </button>
         </div>
       </div>
