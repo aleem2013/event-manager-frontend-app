@@ -28,12 +28,12 @@ const queryClient = new QueryClient({
 
 // Separate component for the app content to use hooks inside
 const AppContent: React.FC = () => {
-  const { isAuthenticated, user } = useAuth();
+  //const { isAuthenticated, user } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />
-      <WelcomeMessage isAuthenticated={isAuthenticated} username={user?.name} />
+      {/* <WelcomeMessage isAuthenticated={isAuthenticated} username={user?.name} /> */}
       <main className="flex-grow">
       {/* <div className="container mx-auto px-4 py-8"> */}
         <Routes>
