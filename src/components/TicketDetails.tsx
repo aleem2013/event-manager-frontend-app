@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Printer, Share2 } from 'lucide-react';
 import { getTicketDetails } from '../api/events';
 import { toast } from 'react-hot-toast';
+import html2pdf from 'html2pdf.js'; 
 
 const TicketDetails: React.FC = () => {
   const { eventId, ticketId } = useParams<{ eventId: string; ticketId: string }>();
@@ -19,6 +20,80 @@ const TicketDetails: React.FC = () => {
     window.print();
   };
 
+  const generatePDF = async () => {
+    if (!printRef.current || !ticket) return null;
+
+    const element = printRef.current;
+    const opt = {
+      margin: 1,
+      filename: `ticket-${ticket.ticketNumber}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    try {
+      const pdf = await html2pdf().set(opt).from(element).save();
+      return opt.filename;
+    } catch (error) {
+      console.error('PDF generation failed:', error);
+      return null;
+    }
+  };
+
+  const handleShare = async () => {
+    if (!ticket) return;
+
+    try {
+      // Show loading toast
+      const loadingToast = toast.loading('Generating PDF...');
+      
+      // Generate PDF
+      const pdfFileName = await generatePDF();
+      
+      if (!pdfFileName) {
+        toast.error('Failed to generate PDF');
+        toast.dismiss(loadingToast);
+        return;
+      }
+
+      // Prepare share data
+      const shareData = {
+        title: `Ticket for ${ticket.event.title}`,
+        text: `Join me at ${ticket.event.title}!\nLocation: ${ticket.event.address}\nTicket #${ticket.ticketNumber}`,
+        files: [
+          new File(
+            [await fetch(pdfFileName).then(res => res.blob())],
+            pdfFileName,
+            { type: 'application/pdf' }
+          )
+        ]
+      };
+
+      toast.dismiss(loadingToast);
+
+      if (navigator.share && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+        toast.success('Ticket shared successfully!');
+      } else {
+        // Fallback: Download PDF directly
+        const link = document.createElement('a');
+        link.href = pdfFileName;
+        link.download = pdfFileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast.success('PDF downloaded successfully!');
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name !== 'AbortError') {
+        toast.error('Failed to share ticket');
+        console.error('Share failed:', error);
+      }
+    }
+  };
+
+  /*
   const handleShare = async () => {
     if (!ticket) return;
 
@@ -41,7 +116,7 @@ const TicketDetails: React.FC = () => {
         toast.error('Failed to share ticket');
       }
     }
-  };
+  };*/
 
   if (isLoading) return <div>Loading...</div>;
   if (!ticket) return <div>Ticket not found</div>;
@@ -107,7 +182,7 @@ const TicketDetails: React.FC = () => {
             className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
           >
             <Share2 className="h-4 w-4 mr-2" />
-            Share
+            Share PDF
           </button>
         </div>
       </div>
