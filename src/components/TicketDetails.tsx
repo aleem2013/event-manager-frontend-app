@@ -63,7 +63,8 @@ const TicketDetails: React.FC = () => {
 
           {/* Add scanning instructions */}
           <div className="mt-6 text-center text-gray-600 text-sm">
-            <p>Scan this QR code at the event to mark your attendance</p>
+            {/* <p>Scan this QR code at the event to mark your attendance</p> */}
+            <p>Don't miss out! Scan the QR code at the venue to check in.</p>
           </div>
         </div>
 

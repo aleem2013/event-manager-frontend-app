@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { markAttendance, getTicketDetailsByTicketId } from '../api/events';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
+import { errorToastConfig } from '../utils/toast-config';
 
 const ScanQR: React.FC = () => {
   const [scanning, setScanning] = useState(true);
@@ -59,8 +60,8 @@ const ScanQR: React.FC = () => {
       const ticketDetails = await getTicketDetailsByTicketId(ticketId); //await ticketQuery.refetch();
       console.log('Status : '+ticketDetails);
       if (ticketDetails?.attended) {
-        toast.error('This ticket has already been marked as attended!', {
-          duration: 4000,
+        toast.error('Oops!! This ticket has already been used', {
+          ...errorToastConfig,
           icon: '⚠️',
         });
         setScanning(true);
