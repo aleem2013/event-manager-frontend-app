@@ -77,7 +77,9 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <Router>
         <AuthProvider>
-          <AppContent />
+          <div className="min-h-full">
+            <AppContent />
+          </div>
         </AuthProvider>
       </Router>
     </QueryClientProvider>
