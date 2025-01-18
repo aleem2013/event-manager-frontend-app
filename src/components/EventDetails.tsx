@@ -122,7 +122,7 @@ const EventDetails: React.FC = () => {
                         {ticket.attended ? 'Attended' : 'Not attended'}
                       </div>
                     </div>
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 w-full md:w-auto">
+                    <div className="flex items-center">
                       {ticket.attended && (
                         <span className="text-green-600 text-sm break-words">
                           {new Date(ticket.attendanceTimestamp).toLocaleString()}
