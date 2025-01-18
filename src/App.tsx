@@ -34,7 +34,8 @@ const AppContent: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       <Navbar />
       <WelcomeMessage isAuthenticated={isAuthenticated} username={user?.name} />
-      <div className="container mx-auto px-4 py-8">
+      <main className="flex-grow">
+      {/* <div className="container mx-auto px-4 py-8"> */}
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -64,7 +65,8 @@ const AppContent: React.FC = () => {
             </ProtectedRoute>
           } />
         </Routes>
-      </div>
+      </main>
+      {/* </div> */}
       <Toaster />
     </div>
   );

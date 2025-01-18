@@ -39,11 +39,11 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col justify-center py-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div className="min-h-screen flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
+        <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900">
           Sign in to your account
-        </h2>
+        </h1>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -60,7 +60,7 @@ const Login: React.FC = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -76,7 +76,7 @@ const Login: React.FC = () => {
                   type="password"
                   autoComplete="current-password"
                   required
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -85,7 +85,7 @@ const Login: React.FC = () => {
               <button
                 type="submit"
                 disabled={mutation.isPending}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {mutation.isPending ? 'Signing in...' : 'Sign in'}
               </button>
@@ -94,6 +94,8 @@ const Login: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+};
 
 
     /*<div className="max-w-md mx-auto mt-8 bg-white rounded-lg shadow-md p-6">
@@ -125,8 +127,8 @@ const Login: React.FC = () => {
           {mutation.isPending ? 'Logging in...' : 'Login'}
         </button>
       </form>
-    </div>*/
+    </div>
   );
-};
+};*/
 
 export default Login;
