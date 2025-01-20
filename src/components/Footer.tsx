@@ -4,20 +4,12 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-white border-t mt-auto py-4 px-4">
-      <div className="max-w-7xl mx-auto flex justify-between items-center text-sm text-gray-600">
-        <div>
-          © {currentYear} Event Manager. All rights reserved.
-        </div>
-        <div className="text-right">
-          <p>Unauthorized use or reproduction of this application is strictly prohibited.</p>
-          <p className="text-gray-500">
-            Developed by 
-            <span className="font-medium text-blue-600">
+    <footer className="py-4 px-6 bg-gray-50 border-t">
+      <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-sm text-gray-600">
+        <div>© {currentYear} Event Manager | Developed by 
             <a href="mailto:aleem.btech@gmail.com">Aleem Mohammed</a>
-            </span>
-          </p>
         </div>
+        <div>All rights reserved. Unauthorized use prohibited.</div>
       </div>
     </footer>
   );
