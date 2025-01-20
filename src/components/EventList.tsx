@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { MapPin, Users } from 'lucide-react';
+import { Calendar, MapPin, Users } from 'lucide-react';
 import { fetchEvents } from '../api/events';
 
 const EventList: React.FC = () => {
@@ -28,6 +28,13 @@ const EventList: React.FC = () => {
                 <div className="flex items-center text-gray-600 mb-2 break-words">
                   <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
                   <span className="break-words">{event.address}</span>
+                </div>
+                <div className="flex items-center text-gray-600 mb-2">
+                  <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <span>
+                    {new Date(event.startDate).toLocaleDateString()} - {new Date(event.endDate).toLocaleDateString()}
+                    <span className="ml-1 text-sm">({event.numberOfDays} days)</span>
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500">
                   <div className="flex items-center">

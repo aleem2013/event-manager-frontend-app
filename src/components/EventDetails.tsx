@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { MapPin, Printer, Loader2 } from 'lucide-react';
+import { MapPin, Printer, Loader2, Clock, Calendar } from 'lucide-react';
 import { fetchEventDetails, createTicket } from '../api/events';
 import toast from 'react-hot-toast';
 
@@ -70,6 +70,11 @@ const EventDetails: React.FC = () => {
   if (isLoading) return <div>Loading...</div>;
   if (!event) return <div>Event not found</div>;
 
+   // Format event dates
+  const formatDateTime = (date: string) => {
+    return new Date(date).toLocaleString();
+  };
+
   return (
     <>
     {showLoadingOverlay && <LoadingOverlay />}
@@ -88,6 +93,24 @@ const EventDetails: React.FC = () => {
               >
                 {event.address}
               </a>
+            </div>
+
+            <div className="space-y-2 mb-6">
+              <div className="flex items-center">
+                <Calendar className="h-5 w-5 mr-2 text-gray-500 flex-shrink-0" />
+                <div>
+                  <div className="font-medium">Event Duration</div>
+                  <div className="text-gray-600">
+                    {formatDateTime(event.startDate)} - {formatDateTime(event.endDate)}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <Clock className="h-5 w-5 mr-2 text-gray-500 flex-shrink-0" />
+                <div className="text-gray-600">
+                  {event.numberOfDays} day{event.numberOfDays > 1 ? 's' : ''}
+                </div>
+              </div>
             </div>
 
             <div className="mb-6">

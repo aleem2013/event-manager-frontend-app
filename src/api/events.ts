@@ -9,6 +9,9 @@ export interface Event {
   googleMapsUrl: string;
   qrCodeUrl: string;
   shortUrl: string;
+  numberOfDays: number,
+  startDate: string,
+  endDate: string,
   tickets?: Ticket[];
 }
 

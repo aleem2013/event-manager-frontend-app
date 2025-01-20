@@ -150,7 +150,13 @@ const TicketDetails: React.FC = () => {
 
           <div className="text-center mb-6">
             <h2 className="text-xl font-semibold mb-2">{ticket.event.title}</h2>
-            <p className="text-gray-600">{ticket.event.address}</p>
+            <p className="text-gray-600 mb-2">{ticket.event.address}</p>
+            <p className="text-gray-600">
+              {new Date(ticket.event.startDate).toLocaleString()} - {new Date(ticket.event.endDate).toLocaleString()}
+            </p>
+            <p className="text-gray-600">
+              Duration: {ticket.event.numberOfDays} day{ticket.event.numberOfDays > 1 ? 's' : ''}
+            </p>
           </div>
 
           <div className="text-center">

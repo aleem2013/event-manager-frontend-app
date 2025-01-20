@@ -21,6 +21,9 @@ const CreateEvent: React.FC = () => {
       title: formData.get('title') as string,
       address: formData.get('address') as string,
       googleMapsUrl: formData.get('googleMapsUrl') as string,
+      numberOfDays: parseInt(formData.get('numberOfDays') as string),
+      startDate: formData.get('startDate') as string,
+      endDate: formData.get('endDate') as string,
     });
   };
 
@@ -60,6 +63,43 @@ const CreateEvent: React.FC = () => {
           <input
             type="url"
             name="googleMapsUrl"
+            required
+            className="w-full px-3 py-2 border rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Number of Days
+          </label>
+          <input
+            type="number"
+            name="numberOfDays"
+            required
+            min="1"
+            className="w-full px-3 py-2 border rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Start Date & Time
+          </label>
+          <input
+            type="datetime-local"
+            name="startDate"
+            required
+            className="w-full px-3 py-2 border rounded-md"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            End Date & Time
+          </label>
+          <input
+            type="datetime-local"
+            name="endDate"
             required
             className="w-full px-3 py-2 border rounded-md"
           />
