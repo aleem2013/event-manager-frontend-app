@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { createEvent } from '../api/events';
@@ -6,6 +6,12 @@ import toast from 'react-hot-toast';
 
 const CreateEvent: React.FC = () => {
   const navigate = useNavigate();
+  const [numberOfDays, setNumberOfDays] = useState<number>(0);
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [showDaysWarning, setShowDaysWarning] = useState<boolean>(false);
+
+
   const mutation = useMutation({
     mutationFn: createEvent,
     onSuccess: (event: any) => {
@@ -21,12 +27,53 @@ const CreateEvent: React.FC = () => {
     return now.toISOString().slice(0, 16);
   };
 
+   // Calculate end date based on start date and number of days
+   const calculateEndDate = (startDateStr: string, days: number) => {
+    if (!startDateStr || days <= 0) return '';
+    const start = new Date(startDateStr);
+    const end = new Date(start);
+    end.setDate(start.getDate() + days - 1); // Subtract 1 because the start day counts as day 1
+    return end.toISOString().slice(0, 16);
+  };
+
+   // Handle number of days change
+   const handleNumberOfDaysChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const days = parseInt(e.target.value);
+    setNumberOfDays(days);
+    setShowDaysWarning(true);
+    
+    // If start date is already selected, update end date
+    if (startDate) {
+      setEndDate(calculateEndDate(startDate, days));
+    }
+  };
+
+  // Handle start date change
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStartDate = e.target.value;
+    setStartDate(newStartDate);
+
+    if (numberOfDays > 0) {
+      setEndDate(calculateEndDate(newStartDate, numberOfDays));
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    
 
-    const startDate = formData.get('startDate') as string;
-    const endDate = formData.get('endDate') as string;
+    // const startDate = formData.get('startDate') as string;
+    // const endDate = formData.get('endDate') as string;
+    if (!numberOfDays) {
+      toast.error('Please enter the number of days first');
+      return;
+    }
+
+    if (!startDate) {
+      toast.error('Please select a start date');
+      return;
+    }
 
     // Additional validation to ensure end date is after start date
     if (new Date(endDate) < new Date(startDate)) {
@@ -94,8 +141,16 @@ const CreateEvent: React.FC = () => {
             name="numberOfDays"
             required
             min="1"
+            value={numberOfDays || ''}
+            onChange={handleNumberOfDaysChange}
             className="w-full px-3 py-2 border rounded-md"
           />
+          {showDaysWarning && numberOfDays > 0 && (
+            <p className="text-blue-600 text-sm mt-1">
+              ℹ️ Based on your selection, the event will run for {numberOfDays} day{numberOfDays > 1 ? 's' : ''}. 
+              Please adjust if needed before selecting dates.
+            </p>
+          )}
         </div>
 
         <div>
@@ -107,8 +162,16 @@ const CreateEvent: React.FC = () => {
             name="startDate"
             required
             min={getCurrentDateTime()}
-            className="w-full px-3 py-2 border rounded-md"
+            value={startDate}
+            onChange={handleStartDateChange}
+            disabled={!numberOfDays}
+            className="w-full px-3 py-2 border rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed"
           />
+          {!numberOfDays && (
+            <p className="text-amber-600 text-sm mt-1">
+              Please enter the "Number of Days" first
+            </p>
+          )}
         </div>
 
         <div>
@@ -120,14 +183,21 @@ const CreateEvent: React.FC = () => {
             name="endDate"
             required
             min={getCurrentDateTime()}
-            className="w-full px-3 py-2 border rounded-md"
+            value={endDate}
+            readOnly
+            className="w-full px-3 py-2 border rounded-md bg-gray-50"
           />
+          {startDate && endDate && (
+            <p className="text-gray-600 text-sm mt-1">
+              End date is automatically calculated based on the start date and number of days
+            </p>
+          )}
         </div>
 
         <button
           type="submit"
-          disabled={mutation.isPending}
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+          disabled={mutation.isPending || !numberOfDays || !startDate || !endDate}
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {mutation.isPending ? 'Creating...' : 'Create Event'}
         </button>
