@@ -43,6 +43,20 @@ const ScanQR: React.FC = () => {
     },
   });
 
+  // Check if event has ended
+  const isEventEnded = (endDate: string): boolean => {
+    const currentDate = new Date();
+    const eventEndDate = new Date(endDate);
+    return currentDate > eventEndDate;
+  };
+
+  // Check if event hasn't started yet
+  const isEventNotStarted = (startDate: string): boolean => {
+    const currentDate = new Date();
+    const eventStartDate = new Date(startDate);
+    return currentDate < eventStartDate;
+  };
+
   // Handle ticketId from URL parameter
   useEffect(() => {
     const ticketId = searchParams.get('ticketId');
@@ -59,6 +73,8 @@ const ScanQR: React.FC = () => {
     try {
       const ticketDetails = await getTicketDetailsByTicketId(ticketId); //await ticketQuery.refetch();
       console.log('Status : '+ticketDetails);
+
+      // Check if ticket is already used
       if (ticketDetails?.attended) {
         toast.error('Oops!! This ticket has already been used', {
           ...errorToastConfig,
@@ -69,10 +85,40 @@ const ScanQR: React.FC = () => {
         return;
       }
 
+       // Check if event has ended
+       if (isEventEnded(ticketDetails.event.endDate)) {
+        toast.error('This event has already ended', {
+          ...errorToastConfig,
+          icon: '❌',
+          duration: 4000
+        });
+        setScanning(true);
+        setCurrentTicketId(null);
+        return;
+      }
+
+      // Check if event hasn't started yet
+      if (isEventNotStarted(ticketDetails.event.startDate)) {
+        const startDate = new Date(ticketDetails.event.startDate).toLocaleDateString();
+        toast.error(`This event hasn't started yet. Event starts on ${startDate}`, {
+          ...errorToastConfig,
+          icon: '⏰',
+          duration: 4000
+        });
+        setScanning(true);
+        setCurrentTicketId(null);
+        return;
+      }
+
       mutation.mutate(ticketId);
     } catch (error) {
       console.error('Error validating ticket:', error);
-      toast.error('Failed to validate ticket');
+      //toast.error('Failed to validate ticket');
+      toast.error('Invalid ticket or QR code', {
+        ...errorToastConfig,
+        icon: '❌',
+        duration: 3000
+      });
       setScanning(true);
       setCurrentTicketId(null);
     }
@@ -94,7 +140,11 @@ const ScanQR: React.FC = () => {
         }
       } catch (error) {
         console.error('Invalid QR code data:', error);
-        toast.error('Invalid QR code');
+        toast.error('Invalid QR code format', {
+          ...errorToastConfig,
+          icon: '❌',
+          duration: 3000
+        });
         setScanning(true);
       }
     }
@@ -108,7 +158,14 @@ const ScanQR: React.FC = () => {
         <div className="aspect-square">
           <QrScanner
             onDecode={handleScan}
-            onError={(error: any) => console.error(error)}
+            onError={(error: any) => {
+              console.error(error);
+              toast.error('Camera error. Please check permissions.', {
+                ...errorToastConfig,
+                icon: '📷',
+                duration: 3000
+              });
+            }}
             constraints={{
               facingMode: 'environment'
             }}
