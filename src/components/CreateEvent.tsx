@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { createEvent } from '../api/events';
 import toast from 'react-hot-toast';
+import LoadingSpinner from './LoadingSpinner';
 
 const CreateEvent: React.FC = () => {
   const navigate = useNavigate();
@@ -92,6 +93,8 @@ const CreateEvent: React.FC = () => {
   };
 
   return (
+    <>
+      {mutation.isPending && <LoadingSpinner />}
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
       <h1 className="text-2xl font-bold mb-6">Create New Event</h1>
       
@@ -203,6 +206,7 @@ const CreateEvent: React.FC = () => {
         </button>
       </form>
     </div>
+  </>
   );
 };
 

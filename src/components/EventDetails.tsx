@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MapPin, Printer, Loader2, Clock, Calendar } from 'lucide-react';
 import { fetchEventDetails, createTicket } from '../api/events';
 import toast from 'react-hot-toast';
+import LoadingSpinner from './LoadingSpinner';
 
 const LoadingOverlay = () => (
   <div 
@@ -67,7 +68,7 @@ const EventDetails: React.FC = () => {
     },
   });*/
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;//<div>Loading...</div>;
   if (!event) return <div>Event not found</div>;
 
    // Format event dates
