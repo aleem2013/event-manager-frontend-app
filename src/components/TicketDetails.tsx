@@ -5,6 +5,7 @@ import { ArrowLeft, Printer, Share2 } from 'lucide-react';
 import { getTicketDetails } from '../api/events';
 import { toast } from 'react-hot-toast';
 import html2pdf from 'html2pdf.js'; 
+import LoadingSpinner from './LoadingSpinner';
 
 const TicketDetails: React.FC = () => {
   const { eventId, ticketId } = useParams<{ eventId: string; ticketId: string }>();
@@ -119,7 +120,7 @@ const TicketDetails: React.FC = () => {
     }
   };*/
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;//<div>Loading...</div>;
   if (!ticket) return <div>Ticket not found</div>;
 
   return (
