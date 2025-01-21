@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { QrScanner } from '@yudiel/react-qr-scanner';
 import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ const ScanQR: React.FC = () => {
   const [scanning, setScanning] = useState(true);
   const [searchParams] = useSearchParams();
   const [currentTicketId, setCurrentTicketId] = useState<string | null>(null);
+  const processingRef = useRef(false);
 
   // Query to fetch ticket details
   /*const ticketQuery = useQuery({
@@ -35,11 +36,13 @@ const ScanQR: React.FC = () => {
       toast.success('Attendance marked successfully!');
       setScanning(true);
       setCurrentTicketId(null);
+      processingRef.current = false;
     },
     onError: () => {
       toast.error('Failed to mark attendance');
       setScanning(true);
       setCurrentTicketId(null);
+      processingRef.current = false;
     },
   });
 
@@ -60,13 +63,16 @@ const ScanQR: React.FC = () => {
   // Handle ticketId from URL parameter
   useEffect(() => {
     const ticketId = searchParams.get('ticketId');
-    if (ticketId) {
+    if (ticketId && !processingRef.current) {
       //mutation.mutate(ticketId);
       handleTicketValidation(ticketId);
     }
   }, [searchParams]);
 
   const handleTicketValidation = async (ticketId: string) => {
+    if (processingRef.current) return;
+
+    processingRef.current = true;
     setScanning(false);
     setCurrentTicketId(ticketId);
 
@@ -82,6 +88,7 @@ const ScanQR: React.FC = () => {
         });
         setScanning(true);
         setCurrentTicketId(null);
+        processingRef.current = false;
         return;
       }
 
@@ -90,10 +97,10 @@ const ScanQR: React.FC = () => {
         toast.error('This event has already ended', {
           ...errorToastConfig,
           icon: '❌',
-          duration: 4000
         });
         setScanning(true);
         setCurrentTicketId(null);
+        processingRef.current = false;
         return;
       }
 
@@ -103,10 +110,10 @@ const ScanQR: React.FC = () => {
         toast.error(`This event hasn't started yet. Event starts on ${startDate}`, {
           ...errorToastConfig,
           icon: '⏰',
-          duration: 4000
         });
         setScanning(true);
         setCurrentTicketId(null);
+        processingRef.current = false;
         return;
       }
 
@@ -117,15 +124,15 @@ const ScanQR: React.FC = () => {
       toast.error('Invalid ticket or QR code', {
         ...errorToastConfig,
         icon: '❌',
-        duration: 3000
       });
       setScanning(true);
       setCurrentTicketId(null);
+      processingRef.current = false;
     }
   };
 
   const handleScan = (data: string) => {
-    if (data) {
+    if (data && !processingRef.current) {
       //setScanning(false);
       try {
         // Extract ticketId from URL parameter
@@ -139,13 +146,13 @@ const ScanQR: React.FC = () => {
           throw new Error('No ticket ID found');
         }
       } catch (error) {
+        if (!processingRef.current) {
         console.error('Invalid QR code data:', error);
         toast.error('Invalid QR code format', {
           ...errorToastConfig,
           icon: '❌',
-          duration: 3000
-        });
-        setScanning(true);
+          });
+        }
       }
     }
   };
@@ -159,12 +166,13 @@ const ScanQR: React.FC = () => {
           <QrScanner
             onDecode={handleScan}
             onError={(error: any) => {
-              console.error(error);
-              toast.error('Camera error. Please check permissions.', {
-                ...errorToastConfig,
-                icon: '📷',
-                duration: 3000
-              });
+              if (!processingRef.current) {
+                console.error(error);
+                toast.error('Camera error. Please check permissions.', {
+                  ...errorToastConfig,
+                  icon: '📷',
+                });
+              }
             }}
             constraints={{
               facingMode: 'environment'
