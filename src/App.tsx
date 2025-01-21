@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';  // Updated import
 import Navbar from './components/Navbar';
@@ -12,7 +12,7 @@ import TicketDetails from './components/TicketDetails';
 import Login from './components/Login';
 import Register from './components/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Configure QueryClient with some defaults
 const queryClient = new QueryClient({
@@ -25,13 +25,23 @@ const queryClient = new QueryClient({
   },
 });
 
+const LoadingSpinner: React.FC = () => (
+  <div className="flex justify-center items-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+  </div>
+);
+
 
 // Separate component for the app content to use hooks inside
 const AppContent: React.FC = () => {
-  //const { isAuthenticated, user } = useAuth();
+  const { isLoading } = useAuth();
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <Navbar />
       {/* <WelcomeMessage isAuthenticated={isAuthenticated} username={user?.name} /> */}
       <main className="flex-grow">
@@ -78,9 +88,12 @@ const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <Router>
         <AuthProvider>
-          <div className="min-h-full">
+          {/* <div className="min-h-full"> */}
+            {/* <AppContent /> */}
+          {/* </div> */}
+          <Suspense fallback={<LoadingSpinner />}>
             <AppContent />
-          </div>
+          </Suspense>
         </AuthProvider>
       </Router>
     </QueryClientProvider>

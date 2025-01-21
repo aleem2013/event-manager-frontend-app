@@ -16,6 +16,7 @@ interface AuthContextType {
   login: (token: string) => void;
   logout: () => void;
   isAdmin: () => boolean;
+  isLoading: boolean; 
 }
 
 interface JwtPayload {
@@ -32,6 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true); 
   const navigate = useNavigate();
 
   const updateUserRole = async (token: string | null) => {
@@ -59,16 +61,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      setIsAuthenticated(true);
-      updateUserRole(token);
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
-      setIsAuthenticated(false);
-      setUserRole(null);
-      setUser(null);
-    }
+    const initializeAuth = async () => {
+      setIsLoading(true);
+      try {
+        if (token) {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          await updateUserRole(token);
+          setIsAuthenticated(true);
+        } else {
+          delete axios.defaults.headers.common['Authorization'];
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        setIsAuthenticated(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeAuth();
   }, [token]);
 
   const login = (newToken: string) => {
@@ -81,13 +93,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setToken(null);
     setUserRole(null);
     setUser(null);
+    setIsAuthenticated(false);
     navigate('/login');
   };
 
   const isAdmin = () => userRole === 'ADMIN';
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, userRole, user, login, logout, isAdmin }}>
+    <AuthContext.Provider value={{ 
+        isAuthenticated, 
+        token, 
+        userRole, 
+        user, 
+        login, 
+        logout, 
+        isAdmin,
+        isLoading
+    }}>
       {children}
     </AuthContext.Provider>
   );

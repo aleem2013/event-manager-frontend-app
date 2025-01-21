@@ -1,7 +1,14 @@
 import React from 'react';
+import { useAuth } from '../contexts/AuthContext'; // Add this import
 
 const Footer: React.FC = () => {
+  const { isLoading } = useAuth();
   const currentYear = new Date().getFullYear();
+  
+  // Don't render footer if loading
+  if (isLoading) {
+    return null;
+  }
   
   return (
     <footer className="py-4 px-6 bg-gray-50 border-t">
