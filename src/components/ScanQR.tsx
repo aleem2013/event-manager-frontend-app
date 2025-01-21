@@ -7,11 +7,15 @@ import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 import { errorToastConfig } from '../utils/toast-config';
 
+const SCAN_COOLDOWN = 1000;
+
 const ScanQR: React.FC = () => {
   const [scanning, setScanning] = useState(true);
   const [searchParams] = useSearchParams();
   const [currentTicketId, setCurrentTicketId] = useState<string | null>(null);
   const processingRef = useRef(false);
+  const lastScanTimeRef = useRef(0);
+  const scannerRef = useRef<any>(null);
 
   // Query to fetch ticket details
   /*const ticketQuery = useQuery({
@@ -34,17 +38,27 @@ const ScanQR: React.FC = () => {
     mutationFn: markAttendance,
     onSuccess: () => {
       toast.success('Attendance marked successfully!');
-      setScanning(true);
-      setCurrentTicketId(null);
-      processingRef.current = false;
+      resetScannerState();
+      // setScanning(true);
+      // setCurrentTicketId(null);
+      // processingRef.current = false;
     },
     onError: () => {
       toast.error('Failed to mark attendance');
-      setScanning(true);
-      setCurrentTicketId(null);
-      processingRef.current = false;
+      resetScannerState();
+      // setScanning(true);
+      // setCurrentTicketId(null);
+      // processingRef.current = false;
     },
   });
+
+  const resetScannerState = () => {
+    setScanning(true);
+    setCurrentTicketId(null);
+    processingRef.current = false;
+    // Update last scan time to prevent immediate rescanning
+    lastScanTimeRef.current = Date.now();
+  };
 
   // Check if event has ended
   const isEventEnded = (endDate: string): boolean => {
@@ -69,6 +83,16 @@ const ScanQR: React.FC = () => {
     }
   }, [searchParams]);
 
+  // Cleanup effect
+  useEffect(() => {
+    return () => {
+      // Cleanup scanner on component unmount
+      if (scannerRef.current) {
+        scannerRef.current.stop();
+      }
+    };
+  }, []);
+
   const handleTicketValidation = async (ticketId: string) => {
     if (processingRef.current) return;
 
@@ -86,9 +110,10 @@ const ScanQR: React.FC = () => {
           ...errorToastConfig,
           icon: '⚠️',
         });
-        setScanning(true);
-        setCurrentTicketId(null);
-        processingRef.current = false;
+        resetScannerState();
+        // setScanning(true);
+        // setCurrentTicketId(null);
+        // processingRef.current = false;
         return;
       }
 
@@ -98,9 +123,10 @@ const ScanQR: React.FC = () => {
           ...errorToastConfig,
           icon: '❌',
         });
-        setScanning(true);
-        setCurrentTicketId(null);
-        processingRef.current = false;
+        resetScannerState();
+        // setScanning(true);
+        // setCurrentTicketId(null);
+        // processingRef.current = false;
         return;
       }
 
@@ -111,9 +137,10 @@ const ScanQR: React.FC = () => {
           ...errorToastConfig,
           icon: '⏰',
         });
-        setScanning(true);
-        setCurrentTicketId(null);
-        processingRef.current = false;
+        resetScannerState();
+        // setScanning(true);
+        // setCurrentTicketId(null);
+        // processingRef.current = false;
         return;
       }
 
@@ -125,14 +152,20 @@ const ScanQR: React.FC = () => {
         ...errorToastConfig,
         icon: '❌',
       });
-      setScanning(true);
-      setCurrentTicketId(null);
-      processingRef.current = false;
+      resetScannerState();
+      // setScanning(true);
+      // setCurrentTicketId(null);
+      // processingRef.current = false;
     }
   };
 
-  const handleScan = (data: string) => {
-    if (data && !processingRef.current) {
+  const handleScan = (data: string | null) => {
+    const now = Date.now();
+    if (!data || processingRef.current || (now - lastScanTimeRef.current) < SCAN_COOLDOWN) {
+      return;
+    }
+
+    lastScanTimeRef.current = now;
       //setScanning(false);
       try {
         // Extract ticketId from URL parameter
@@ -151,9 +184,20 @@ const ScanQR: React.FC = () => {
         toast.error('Invalid QR code format', {
           ...errorToastConfig,
           icon: '❌',
+          duration: 2000,
           });
         }
       }
+  };
+
+  const handleError = (error: any) => {
+    if (!processingRef.current && (Date.now() - lastScanTimeRef.current) >= SCAN_COOLDOWN) {
+      console.error(error);
+      lastScanTimeRef.current = Date.now();
+      toast.error('Camera error. Please check permissions.', {
+        ...errorToastConfig,
+        icon: '📷',
+      });
     }
   };
 
@@ -164,19 +208,15 @@ const ScanQR: React.FC = () => {
       {scanning ? (
         <div className="aspect-square">
           <QrScanner
-            onDecode={handleScan}
-            onError={(error: any) => {
-              if (!processingRef.current) {
-                console.error(error);
-                toast.error('Camera error. Please check permissions.', {
-                  ...errorToastConfig,
-                  icon: '📷',
-                });
-              }
+            ref={(instance) => {
+              scannerRef.current = instance; // Assign the instance to the ref
             }}
+            onDecode={handleScan}
+            onError={handleError}
             constraints={{
               facingMode: 'environment'
             }}
+            scanDelay={500} // Add a slight delay between scans
           />
         </div>
       ) : (
