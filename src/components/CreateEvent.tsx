@@ -14,16 +14,33 @@ const CreateEvent: React.FC = () => {
     },
   });
 
+  // Get current date in YYYY-MM-DDThh:mm format for datetime-local input
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    return now.toISOString().slice(0, 16);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+
+    const startDate = formData.get('startDate') as string;
+    const endDate = formData.get('endDate') as string;
+
+    // Additional validation to ensure end date is after start date
+    if (new Date(endDate) < new Date(startDate)) {
+      toast.error('End date must be after start date');
+      return;
+    }
+
     mutation.mutate({
       title: formData.get('title') as string,
       address: formData.get('address') as string,
       googleMapsUrl: formData.get('googleMapsUrl') as string,
       numberOfDays: parseInt(formData.get('numberOfDays') as string),
-      startDate: formData.get('startDate') as string,
-      endDate: formData.get('endDate') as string,
+      startDate,//: formData.get('startDate') as string,
+      endDate,//: formData.get('endDate') as string,
     });
   };
 
@@ -89,6 +106,7 @@ const CreateEvent: React.FC = () => {
             type="datetime-local"
             name="startDate"
             required
+            min={getCurrentDateTime()}
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>
@@ -101,6 +119,7 @@ const CreateEvent: React.FC = () => {
             type="datetime-local"
             name="endDate"
             required
+            min={getCurrentDateTime()}
             className="w-full px-3 py-2 border rounded-md"
           />
         </div>

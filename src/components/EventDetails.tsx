@@ -75,6 +75,15 @@ const EventDetails: React.FC = () => {
     return new Date(date).toLocaleString();
   };
 
+   // Check if event has ended
+   const isEventEnded = () => {
+    const currentDate = new Date();
+    const eventEndDate = new Date(event.endDate);
+    return currentDate > eventEndDate;
+  };
+
+  const isTicketGenerationDisabled = isEventEnded();
+
   return (
     <>
     {showLoadingOverlay && <LoadingOverlay />}
@@ -122,10 +131,19 @@ const EventDetails: React.FC = () => {
               <h2 className="text-xl font-semibold mb-2">Tickets</h2>
               <button
                 onClick={() => createTicketMutation.mutate(id!)}
+                disabled={isTicketGenerationDisabled}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed inline-flex items-center space-x-2"
               >
-                Generate New Ticket
+                {isTicketGenerationDisabled 
+                  ? 'Event has ended - Cannot generate tickets' 
+                  : 'Generate New Ticket'
+                }
               </button>
+              {isTicketGenerationDisabled && (
+                <p className="text-red-500 text-sm mt-2">
+                  This event has ended. New tickets cannot be generated.
+                </p>
+              )}
             </div>
 
             <div className="mt-4">
