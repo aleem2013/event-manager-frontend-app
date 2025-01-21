@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Users } from 'lucide-react';
 import { fetchEvents } from '../api/events';
+import LoadingSpinner from './LoadingSpinner';
 
 const EventList: React.FC = () => {
   const { data: events, isLoading, error } = useQuery({
@@ -10,7 +11,7 @@ const EventList: React.FC = () => {
     queryFn: fetchEvents
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;//<div>Loading...</div>;
   if (error) return <div>Error loading events</div>;
 
   return (
