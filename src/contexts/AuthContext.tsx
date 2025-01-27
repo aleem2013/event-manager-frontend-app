@@ -35,7 +35,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true); 
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
 
   const updateUserRole = async (token: string | null) => {
     if (token) {
