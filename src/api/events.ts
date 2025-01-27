@@ -1,4 +1,3 @@
-import axios from 'axios';
 import api from './index';
 
 const API_URL = import.meta.env.VITE_API_URL;// 'https://event-management-frontend-5e7ap9o9a.vercel.app';//'http://localhost:3000';
@@ -28,7 +27,7 @@ export interface Ticket {
 
 export const fetchEvents = async (): Promise<Event[]> => {
   const response = await api.get(`${API_URL}/api/events`);
-  return response.data;
+  return response.data.data;
 };
 
 export const fetchEventDetails = async (id: string): Promise<Event> => {
