@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 interface User {
     name?: string;
@@ -35,6 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true); 
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
   const updateUserRole = async (token: string | null) => {
     if (token) {
@@ -65,7 +67,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsLoading(true);
       try {
         if (token) {
+            // Set both JWT token and language in axios defaults
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          axios.defaults.headers.common['Accept-Language'] = i18n.language;
           await updateUserRole(token);
           setIsAuthenticated(true);
         } else {
@@ -81,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     initializeAuth();
-  }, [token]);
+  }, [token, i18n.language]);
 
   const login = (newToken: string) => {
     localStorage.setItem('token', newToken);

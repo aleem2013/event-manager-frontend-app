@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Menu, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, logout, isAdmin } = useAuth();
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -31,14 +34,14 @@ const Navbar: React.FC = () => {
                     to="/create-event"
                     className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-blue-600"
                   >
-                    Create Event
+                    {t('events.create.title')}
                   </Link>
                 )}
                 <Link
                   to="/scan"
                   className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-blue-600"
                 >
-                  Scan QR
+                  {t('tickets.scan.title')}
                 </Link>
               </div>
             )}
@@ -46,6 +49,7 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex md:items-center md:space-x-4">
+            <LanguageSwitcher />
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
                 {isAdmin() && (
@@ -53,14 +57,14 @@ const Navbar: React.FC = () => {
                     to="/register"
                     className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                   >
-                    Register
+                    {t('auth.register.title')}
                   </Link>
                 )}
                 <button
                   onClick={logout}
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700"
                 >
-                  Logout
+                   {t('auth.logout')}
                 </button>
               </div>
             ) : (
@@ -69,7 +73,7 @@ const Navbar: React.FC = () => {
                   to="/login"
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
                 >
-                  Login
+                   {t('auth.login.title')}
                 </Link>
               )
             )}
@@ -96,6 +100,9 @@ const Navbar: React.FC = () => {
         {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden pb-4">
+            <div className="py-2">
+              <LanguageSwitcher />
+            </div>
             {isAuthenticated && (
               <div className="space-y-2 pt-2 pb-3">
                 {isAdmin() && (
@@ -104,7 +111,7 @@ const Navbar: React.FC = () => {
                     className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Create Event
+                    {t('events.create.title')}
                   </Link>
                 )}
                 <Link
@@ -112,7 +119,7 @@ const Navbar: React.FC = () => {
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Scan QR
+                  {t('tickets.scan.title')}
                 </Link>
               </div>
             )}
@@ -126,7 +133,7 @@ const Navbar: React.FC = () => {
                       className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      Create Account
+                     {t('auth.register.title')}
                     </Link>
                   )}
                   <button
@@ -136,7 +143,7 @@ const Navbar: React.FC = () => {
                     }}
                     className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                   >
-                    Logout
+                    {t('auth.logout')}
                   </button>
                 </div>
               ) : (
@@ -146,7 +153,7 @@ const Navbar: React.FC = () => {
                     className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Login
+                    {t('auth.login.title')}
                   </Link>
                 )
               )}

@@ -1,0 +1,87 @@
+{
+    "common": {
+      "loading": "Cargando...",
+      "error": "Se produjo un error",
+      "success": "Éxito",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "back": "Volver"
+    },
+    "auth": {
+      "login": {
+        "title": "Iniciar sesión en su cuenta",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "submit": "Iniciar sesión",
+        "submitting": "Iniciando sesión...",
+        "success": "Sesión iniciada correctamente",
+        "error": "Credenciales inválidas"
+      },
+      "register": {
+        "title": "Registrarse",
+        "name": "Nombre",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "submit": "Registrarse",
+        "submitting": "Registrando...",
+        "success": "Registro exitoso",
+        "error": "Error en el registro"
+      }
+    },
+    "events": {
+      "list": {
+        "title": "Eventos",
+        "noEvents": "No se encontraron eventos"
+      },
+      "create": {
+        "title": "Crear Nuevo Evento",
+        "eventTitle": "Título del Evento",
+        "address": "Dirección",
+        "googleMapsUrl": "URL de Google Maps",
+        "numberOfDays": "Número de Días",
+        "startDate": "Fecha y Hora de Inicio",
+        "endDate": "Fecha y Hora de Finalización",
+        "submit": "Crear Evento",
+        "submitting": "Creando...",
+        "success": "Evento creado exitosamente"
+      },
+      "details": {
+        "tickets": "Entradas",
+        "generateTicket": "Generar Nueva Entrada",
+        "eventEnded": "El evento ha terminado - No se pueden generar entradas",
+        "existingTickets": "Entradas Existentes",
+        "attended": "Asistió",
+        "notAttended": "No asistió"
+      }
+    },
+    "tickets": {
+      "details": {
+        "title": "Entrada del Evento",
+        "ticketNumber": "Entrada #",
+        "scanInstructions": "¡No te lo pierdas! Escanea el código QR en el lugar.",
+        "print": "Imprimir Entrada",
+        "share": "Compartir PDF"
+      },
+      "scan": {
+        "title": "Escanear Código QR",
+        "processing": "Procesando...",
+        "instructions": "Coloca el código QR dentro del marco para escanear",
+        "success": "Asistencia marcada exitosamente",
+        "error": {
+          "invalid": "Código QR inválido",
+          "alreadyUsed": "Esta entrada ya ha sido utilizada",
+          "eventEnded": "Este evento ya ha terminado",
+          "eventNotStarted": "Este evento aún no ha comenzado",
+          "camera": "Error de cámara. Por favor verifica los permisos."
+        }
+      }
+    },
+    "validation": {
+      "required": "Este campo es requerido",
+      "email": "Por favor ingresa un correo electrónico válido",
+      "minLength": "Debe tener al menos {{min}} caracteres",
+      "url": "Por favor ingresa una URL válida"
+    }
+  }

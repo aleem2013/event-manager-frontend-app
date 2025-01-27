@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from './index';
 
 const API_URL = import.meta.env.VITE_API_URL; //'https://event-management-frontend-5e7ap9o9a.vercel.app';//'http://localhost:3000';
 
@@ -19,11 +20,11 @@ export interface AuthResponse {
 }
 
 export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
-  const response = await axios.post(`${API_URL}/api/auth/login`, credentials);
+  const response = await api.post(`${API_URL}/api/auth/login`, credentials);
   return response.data;
 };
 
 export const register = async (credentials: RegisterCredentials): Promise<AuthResponse> => {
-  const response = await axios.post(`${API_URL}/api/auth/register`, credentials);
+  const response = await api.post(`${API_URL}/api/auth/register`, credentials);
   return response.data;
 };

@@ -13,6 +13,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import './i18n/config'; // Import i18n configuration
 
 // Configure QueryClient with some defaults
 const queryClient = new QueryClient({

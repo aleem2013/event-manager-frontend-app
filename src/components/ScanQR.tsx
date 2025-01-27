@@ -6,6 +6,7 @@ import { markAttendance, getTicketDetailsByTicketId } from '../api/events';
 import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 import { errorToastConfig } from '../utils/toast-config';
+import { useTranslation } from 'react-i18next';
 
 const SCAN_COOLDOWN = 1000;
 
@@ -16,6 +17,7 @@ const ScanQR: React.FC = () => {
   const processingRef = useRef(false);
   const lastScanTimeRef = useRef(0);
   const scannerRef = useRef<any>(null);
+  const { t } = useTranslation();
 
   // Query to fetch ticket details
   /*const ticketQuery = useQuery({
@@ -37,14 +39,14 @@ const ScanQR: React.FC = () => {
   const mutation = useMutation({
     mutationFn: markAttendance,
     onSuccess: () => {
-      toast.success('Attendance marked successfully!');
+      toast.success(t('tickets.scan.success'));
       resetScannerState();
       // setScanning(true);
       // setCurrentTicketId(null);
       // processingRef.current = false;
     },
     onError: () => {
-      toast.error('Failed to mark attendance');
+      toast.error(t('tickets.scan.error.generic'));
       resetScannerState();
       // setScanning(true);
       // setCurrentTicketId(null);
@@ -106,7 +108,7 @@ const ScanQR: React.FC = () => {
 
       // Check if ticket is already used
       if (ticketDetails?.attended) {
-        toast.error('Oops!! This ticket has already been used', {
+        toast.error(t('tickets.scan.error.alreadyUsed'), {
           ...errorToastConfig,
           icon: '⚠️',
         });
@@ -119,7 +121,7 @@ const ScanQR: React.FC = () => {
 
        // Check if event has ended
        if (isEventEnded(ticketDetails.event.endDate)) {
-        toast.error('This event has already ended', {
+        toast.error(t('tickets.scan.error.eventEnded'), {
           ...errorToastConfig,
           icon: '❌',
         });
@@ -132,15 +134,13 @@ const ScanQR: React.FC = () => {
 
       // Check if event hasn't started yet
       if (isEventNotStarted(ticketDetails.event.startDate)) {
-        const startDate = new Date(ticketDetails.event.startDate).toLocaleDateString();
-        toast.error(`This event hasn't started yet. Event starts on ${startDate}`, {
+        toast.error(t('tickets.scan.error.eventNotStarted', {
+          date: new Date(ticketDetails.event.startDate).toLocaleDateString()
+        }), {
           ...errorToastConfig,
           icon: '⏰',
         });
         resetScannerState();
-        // setScanning(true);
-        // setCurrentTicketId(null);
-        // processingRef.current = false;
         return;
       }
 
@@ -148,7 +148,7 @@ const ScanQR: React.FC = () => {
     } catch (error) {
       console.error('Error validating ticket:', error);
       //toast.error('Failed to validate ticket');
-      toast.error('Invalid ticket or QR code', {
+      toast.error(t('tickets.scan.error.invalid'), {
         ...errorToastConfig,
         icon: '❌',
       });
@@ -203,7 +203,7 @@ const ScanQR: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-      <h1 className="text-2xl font-bold mb-6">Scan QR Code</h1>
+      <h1 className="text-2xl font-bold mb-6">{t('tickets.scan.title')}</h1>
       
       {scanning ? (
         <div className="aspect-square">
@@ -223,11 +223,11 @@ const ScanQR: React.FC = () => {
         // <div className="text-center">Processing...</div>
         <div className="flex flex-col items-center justify-center space-y-4">
           <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-          <div className="text-center text-gray-600">Processing...</div>
+          <div className="text-center text-gray-600">{t('tickets.scan.processing')}</div>
         </div>
       )}
       <p className="mt-4 text-sm text-gray-500 text-center">
-        Position the QR code within the frame to scan
+      {t('tickets.scan.instructions')}
       </p>
     </div>
   );

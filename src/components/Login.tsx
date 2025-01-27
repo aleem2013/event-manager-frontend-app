@@ -4,11 +4,13 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   
   const from = (location.state as any)?.from?.pathname || '/';
 
@@ -42,7 +44,7 @@ const Login: React.FC = () => {
     <div className="min-h-screen flex flex-col justify-center py-6 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-          Sign in to your account
+          {t('auth.login.title')}
         </h1>
       </div>
 
@@ -51,7 +53,7 @@ const Login: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+                {t('auth.login.email')}
               </label>
               <div className="mt-1">
                 <input
@@ -67,7 +69,7 @@ const Login: React.FC = () => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
+                {t('auth.login.password')}
               </label>
               <div className="mt-1">
                 <input
@@ -87,7 +89,7 @@ const Login: React.FC = () => {
                 disabled={mutation.isPending}
                 className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {mutation.isPending ? 'Signing in...' : 'Sign in'}
+                {mutation.isPending ? t('auth.login.submitting') : t('auth.login.submit')}
               </button>
             </div>
           </form>
