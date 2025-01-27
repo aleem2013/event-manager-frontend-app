@@ -36,7 +36,7 @@ const TicketDetails: React.FC = () => {
     };
 
     try {
-      const pdf = await html2pdf().set(opt).from(element).save();
+      await html2pdf().set(opt).from(element).save();
       return opt.filename;
     } catch (error) {
       console.error('PDF generation failed:', error);
