@@ -1,6 +1,6 @@
 import api from './index';
 
-const API_URL = import.meta.env.VITE_API_URL; //'https://event-management-frontend-5e7ap9o9a.vercel.app';//'http://localhost:3000';
+//const API_URL = import.meta.env.VITE_API_URL; //'https://event-management-frontend-5e7ap9o9a.vercel.app';//'http://localhost:3000';
 
 export interface LoginCredentials {
   email: string;
@@ -19,11 +19,19 @@ export interface AuthResponse {
 }
 
 export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
-  const response = await api.post(`${API_URL}/api/auth/login`, credentials);
-  return response.data;
+  try {
+    const response = await api.post('/api/auth/login', credentials);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const register = async (credentials: RegisterCredentials): Promise<AuthResponse> => {
-  const response = await api.post(`${API_URL}/api/auth/register`, credentials);
-  return response.data;
+  try {
+    const response = await api.post('/api/auth/register', credentials);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import api from '../api';
 
 interface User {
     name?: string;
@@ -68,12 +69,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         if (token) {
             // Set both JWT token and language in axios defaults
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          axios.defaults.headers.common['Accept-Language'] = i18n.language;
-          await updateUserRole(token);
-          setIsAuthenticated(true);
+            await updateUserRole(token);
+            setIsAuthenticated(true);
         } else {
-          delete axios.defaults.headers.common['Authorization'];
           setIsAuthenticated(false);
         }
       } catch (error) {
@@ -85,7 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     initializeAuth();
-  }, [token, i18n.language]);
+  }, [token]);
 
   const login = (newToken: string) => {
     localStorage.setItem('token', newToken);
