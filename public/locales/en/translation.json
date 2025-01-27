@@ -7,7 +7,8 @@
       "save": "Save",
       "edit": "Edit",
       "delete": "Delete",
-      "back": "Back"
+      "back": "Back",
+      "backToEvent": "Back to Event"
     },
     "auth": {
       "login": {
@@ -48,13 +49,23 @@
         "success": "Event created successfully"
       },
       "details": {
-        "tickets": "Tickets",
-        "generateTicket": "Generate New Ticket",
-        "eventEnded": "Event has ended - Cannot generate tickets",
-        "existingTickets": "Existing Tickets",
-        "attended": "Attended",
-        "notAttended": "Not attended"
-      }
+            "title": "Event Ticket",
+            "notFound": "Ticket not found",
+            "qrCodeAlt": "Ticket QR Code",
+            "duration": "Duration: {{days}} day{{count, plural, one {} other {s}}}",
+            "ticketNumber": "Ticket #{{number}}",
+            "attendedAt": "Attended at: {{time}}",
+            "scanInstructions": "Don't miss out! Scan the QR code at the venue.",
+            "printButton": "Print Ticket",
+            "sharePdfButton": "Share PDF",
+            "generatingPdf": "Generating PDF...",
+            "pdfGenerationError": "Failed to generate PDF",
+            "shareTitle": "Ticket for {{title}}",
+            "shareText": "Join me at {{title}}!\nLocation: {{address}}\nTicket #{{ticketNumber}}",
+            "shareSuccess": "Ticket shared successfully!",
+            "downloadSuccess": "PDF downloaded successfully!",
+            "shareError": "Failed to share ticket"
+        }
     },
     "tickets": {
       "details": {

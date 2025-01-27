@@ -1,11 +1,12 @@
 import React from 'react';
-import { useAuth } from '../contexts/AuthContext'; // Add this import
+import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 const Footer: React.FC = () => {
   const { isLoading } = useAuth();
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   
-  // Don't render footer if loading
   if (isLoading) {
     return null;
   }
@@ -13,10 +14,11 @@ const Footer: React.FC = () => {
   return (
     <footer className="py-4 px-6 bg-gray-50 border-t">
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-sm text-gray-600">
-        <div>© {currentYear} Event Manager | by  
-            <a href="mailto:aleem.btech@gmail.com"> Aleem Mohammed</a>
+        <div>
+          {t('footer.copyright', { year: currentYear })} | {t('footer.by')}
+          <a href="mailto:aleem.btech@gmail.com"> Aleem Mohammed</a>
         </div>
-        <div>All rights reserved. Unauthorized use prohibited.</div>
+        <div>{t('footer.rights')}</div>
       </div>
     </footer>
   );

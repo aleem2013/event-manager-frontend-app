@@ -7,7 +7,8 @@
       "save": "Guardar",
       "edit": "Editar",
       "delete": "Eliminar",
-      "back": "Volver"
+      "back": "Volver",
+      "backToEvent": "Volver al Evento"
     },
     "auth": {
       "login": {
@@ -58,12 +59,23 @@
     },
     "tickets": {
       "details": {
-        "title": "Entrada del Evento",
-        "ticketNumber": "Entrada #",
-        "scanInstructions": "¡No te lo pierdas! Escanea el código QR en el lugar.",
-        "print": "Imprimir Entrada",
-        "share": "Compartir PDF"
-      },
+            "title": "Entrada del Evento",
+            "notFound": "Entrada no encontrada",
+            "qrCodeAlt": "Código QR de la entrada",
+            "duration": "Duración: {{days}} día{{count, plural, one {} other {s}}}",
+            "ticketNumber": "Entrada #{{number}}",
+            "attendedAt": "Asistió el: {{time}}",
+            "scanInstructions": "¡No te lo pierdas! Escanea el código QR en el lugar del evento.",
+            "printButton": "Imprimir Entrada",
+            "sharePdfButton": "Compartir PDF",
+            "generatingPdf": "Generando PDF...",
+            "pdfGenerationError": "Error al generar el PDF",
+            "shareTitle": "Entrada para {{title}}",
+            "shareText": "¡Únete a {{title}}!\nLugar: {{address}}\nEntrada #{{ticketNumber}}",
+            "shareSuccess": "¡Entrada compartida exitosamente!",
+            "downloadSuccess": "¡PDF descargado exitosamente!",
+            "shareError": "Error al compartir la entrada"
+        },
       "scan": {
         "title": "Escanear Código QR",
         "processing": "Procesando...",

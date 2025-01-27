@@ -6,11 +6,13 @@ import { getTicketDetails } from '../api/events';
 import { toast } from 'react-hot-toast';
 import html2pdf from 'html2pdf.js'; 
 import LoadingSpinner from './LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 const TicketDetails: React.FC = () => {
   const { eventId, ticketId } = useParams<{ eventId: string; ticketId: string }>();
   const navigate = useNavigate();
   const printRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
   
   const { data: ticket, isLoading } = useQuery({
     queryKey: ['ticket', eventId, ticketId],
@@ -35,7 +37,6 @@ const TicketDetails: React.FC = () => {
 
     try {
       const pdf = await html2pdf().set(opt).from(element).save();
-      console.log(pdf);
       return opt.filename;
     } catch (error) {
       console.error('PDF generation failed:', error);
@@ -47,22 +48,23 @@ const TicketDetails: React.FC = () => {
     if (!ticket) return;
 
     try {
-      // Show loading toast
-      const loadingToast = toast.loading('Generating PDF...');
+      const loadingToast = toast.loading(t('tickets.details.generatingPdf'));
       
-      // Generate PDF
       const pdfFileName = await generatePDF();
       
       if (!pdfFileName) {
-        toast.error('Failed to generate PDF');
+        toast.error(t('tickets.details.pdfGenerationError'));
         toast.dismiss(loadingToast);
         return;
       }
 
-      // Prepare share data
       const shareData = {
-        title: `Ticket for ${ticket.event.title}`,
-        text: `Join me at ${ticket.event.title}!\nLocation: ${ticket.event.address}\nTicket #${ticket.ticketNumber}`,
+        title: t('tickets.details.shareTitle', { title: ticket.event.title }),
+        text: t('tickets.details.shareText', { 
+          title: ticket.event.title,
+          address: ticket.event.address,
+          ticketNumber: ticket.ticketNumber
+        }),
         files: [
           new File(
             [await fetch(pdfFileName).then(res => res.blob())],
@@ -76,52 +78,26 @@ const TicketDetails: React.FC = () => {
 
       if (navigator.share && navigator.canShare(shareData)) {
         await navigator.share(shareData);
-        toast.success('Ticket shared successfully!');
+        toast.success(t('tickets.details.shareSuccess'));
       } else {
-        // Fallback: Download PDF directly
         const link = document.createElement('a');
         link.href = pdfFileName;
         link.download = pdfFileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        toast.success('PDF downloaded successfully!');
+        toast.success(t('tickets.details.downloadSuccess'));
       }
     } catch (error) {
       if (error instanceof Error && error.name !== 'AbortError') {
-        toast.error('Failed to share ticket');
+        toast.error(t('tickets.details.shareError'));
         console.error('Share failed:', error);
       }
     }
   };
 
-  /*
-  const handleShare = async () => {
-    if (!ticket) return;
-
-    const shareData = {
-      title: `Ticket for ${ticket.event.title}`,
-      text: `Join me at ${ticket.event.title}!\nLocation: ${ticket.event.address}\nTicket #${ticket.ticketNumber}`,
-      url: window.location.href
-    };
-
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        // Fallback to copying the share text to clipboard
-        await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
-        toast.success('Ticket details copied to clipboard!');
-      }
-    } catch (error) {
-      if (error instanceof Error && error.name !== 'AbortError') {
-        toast.error('Failed to share ticket');
-      }
-    }
-  };*/
-
-  if (isLoading) return <LoadingSpinner />;//<div>Loading...</div>;
-  if (!ticket) return <div>Ticket not found</div>;
+  if (isLoading) return <LoadingSpinner />;
+  if (!ticket) return <div>{t('tickets.details.notFound')}</div>;
 
   return (
     <div className="min-h-screen p-4">
@@ -131,7 +107,7 @@ const TicketDetails: React.FC = () => {
           className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Event
+          {t('common.backToEvent')}
         </button>
 
         {/* Printable Ticket Section */}
@@ -139,12 +115,12 @@ const TicketDetails: React.FC = () => {
           ref={printRef}
           className="bg-white rounded-lg shadow-md p-4 md:p-8 print:shadow-none"
         >
-          <h1 className="text-2xl font-bold mb-6 text-center">Event Ticket</h1>
+          <h1 className="text-2xl font-bold mb-6 text-center">{t('tickets.details.title')}</h1>
           
           <div className="flex justify-center mb-6">
             <img 
               src={ticket.qrCodeUrl}
-              alt="Ticket QR Code"
+              alt={t('tickets.details.qrCodeAlt')}
               className="w-64 h-64"
             />
           </div>
@@ -156,23 +132,28 @@ const TicketDetails: React.FC = () => {
               {new Date(ticket.event.startDate).toLocaleString()} - {new Date(ticket.event.endDate).toLocaleString()}
             </p>
             <p className="text-gray-600">
-              Duration: {ticket.event.numberOfDays} day{ticket.event.numberOfDays > 1 ? 's' : ''}
+              {t('tickets.details.duration', { 
+                days: ticket.event.numberOfDays,
+                count: ticket.event.numberOfDays 
+              })}
             </p>
           </div>
 
           <div className="text-center">
-            <p className="text-lg font-medium">Ticket #{ticket.ticketNumber}</p>
+            <p className="text-lg font-medium">
+              {t('tickets.details.ticketNumber', { number: ticket.ticketNumber })}
+            </p>
             {ticket.attended && (
               <p className="text-green-600 mt-2">
-                Attended at: {new Date(ticket.attendanceTimestamp).toLocaleString()}
+                {t('tickets.details.attendedAt', { 
+                  time: new Date(ticket.attendanceTimestamp).toLocaleString() 
+                })}
               </p>
             )}
           </div>
 
-          {/* Add scanning instructions */}
           <div className="mt-6 text-center text-gray-600 text-sm">
-            {/* <p>Scan this QR code at the event to mark your attendance</p> */}
-            <p>Don't miss out! Scan the QR code at the venue.</p>
+            <p>{t('tickets.details.scanInstructions')}</p>
           </div>
         </div>
 
@@ -183,14 +164,14 @@ const TicketDetails: React.FC = () => {
             className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
             <Printer className="h-4 w-4 mr-2" />
-            Print Ticket
+            {t('tickets.details.printButton')}
           </button>
           <button
             onClick={handleShare}
             className="flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
           >
             <Share2 className="h-4 w-4 mr-2" />
-            Share PDF
+            {t('tickets.details.sharePdfButton')}
           </button>
         </div>
       </div>
