@@ -37,8 +37,10 @@
     "events": {
       "list": {
         "error": "Error al cargar los eventos",
-        "duration": "({{count}} día{{count, plural, one {} other {s}}})",
-        "tickets": "{{count}} entrada{{count, plural, one {} other {s}}}"
+        "duration_one": "{{count}} día",
+        "duration_other": "{{count}} días",
+        "tickets_one": "{{count}} entrada",
+        "tickets_other": "{{count}} entradas"
       },
       "create": {
         "title": "Crear Nuevo Evento",
@@ -61,7 +63,8 @@
         "notAttended": "No asistió",
         "notFound": "Evento no encontrado",
         "eventDuration": "Duración del Evento",
-        "duration": "{{count}} día{{count, plural, one {} other {s}}}",
+        "duration_one": "{{count}} día",
+        "duration_other": "{{count}} días",
         "qrCode": "Código QR",
         "qrCodeAlt": "Código QR del Evento",
         "generatingTicket": "Generando Entrada...",
