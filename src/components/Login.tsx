@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
+import { Calendar } from 'lucide-react';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -41,14 +42,25 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-6 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col justify-center py-6 px-4 sm:px-6 lg:px-8 bg-gray-50">
       {/* Language Switcher */}
       <div className="absolute top-4 right-4">
         <LanguageSwitcher />
       </div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900 mb-8">
+        {/* App Logo/Icon */}
+        <div className="flex justify-center mb-6">
+          <Calendar className="h-12 w-12 text-blue-600" />
+        </div>
+        
+        {/* Company Title */}
+        <h2 className="text-center text-2xl font-bold text-gray-900 mb-2">
+          Event Manager
+        </h2>
+        
+        {/* Login Title */}
+        <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900">
           {t('auth.login.title')}
         </h1>
       </div>
@@ -92,7 +104,7 @@ const Login: React.FC = () => {
               <button
                 type="submit"
                 disabled={mutation.isPending}
-                className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {mutation.isPending ? t('auth.login.submitting') : t('auth.login.submit')}
               </button>
