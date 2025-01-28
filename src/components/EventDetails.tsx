@@ -23,7 +23,7 @@ const LoadingOverlay = () => {
 };
 
 const EventDetails: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -41,13 +41,7 @@ const EventDetails: React.FC = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['event', id] });
-      toast.success(t('events.details.ticketCreated'), {
-        style: {
-          fontSize: '1.2rem',
-          padding: '16px',
-        },
-        duration: 3000,
-      });
+      toast.success(t('events.details.ticketCreated'));
     },
     onSettled: () => {
       setShowLoadingOverlay(false);
@@ -61,7 +55,7 @@ const EventDetails: React.FC = () => {
   if (!event) return <div>{t('events.details.notFound')}</div>;
 
   const formatDateTime = (date: string) => {
-    return new Date(date).toLocaleString();
+    return new Date(date).toLocaleString(i18n.language);
   };
 
   const isEventEnded = () => {

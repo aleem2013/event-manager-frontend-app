@@ -7,7 +7,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 
 const EventList: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: events, isLoading, error } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents
@@ -35,7 +35,7 @@ const EventList: React.FC = () => {
                 <div className="flex items-center text-gray-600 mb-2">
                   <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
                   <span>
-                    {new Date(event.startDate).toLocaleDateString()} - {new Date(event.endDate).toLocaleDateString()}
+                    {new Date(event.startDate).toLocaleDateString(i18n.language)} - {new Date(event.endDate).toLocaleDateString(i18n.language)}
                     <span className="ml-1 text-sm">
                       {t('events.list.duration', { 
                         days: event.numberOfDays,

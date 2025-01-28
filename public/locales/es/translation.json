@@ -22,6 +22,7 @@
         "success": "Sesión iniciada correctamente",
         "error": "Credenciales inválidas"
       },
+      "logout": "Cerrar sesión",
       "register": {
         "title": "Registrarse",
         "name": "Nombre",

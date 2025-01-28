@@ -21,6 +21,7 @@
         "error": "Invalid credentials",
         "language": "Select language"
       },
+      "logout": "Logout",
       "register": {
         "title": "Register",
         "name": "Name",
