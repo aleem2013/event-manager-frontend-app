@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu, X, Home } from 'lucide-react';
+import { Menu, X, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -24,9 +24,13 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-16">
           {/* Logo and Desktop Navigation */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
-              <Home className="h-6 w-6 mr-2" />
-              <span>Event Manager</span>
+            <Link 
+              to="/" 
+              className="flex items-center text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors"
+              aria-label="EventPro Home"
+            >
+              <Calendar className="h-8 w-8 text-blue-600 mr-2" />
+              <span>EventPro</span>
             </Link>
             
             {/* Desktop Navigation */}
@@ -65,7 +69,7 @@ const Navbar: React.FC = () => {
                 )}
                 <button
                   onClick={logout}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 transition-colors"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
                 >
                   {t('auth.logout')}
                 </button>
