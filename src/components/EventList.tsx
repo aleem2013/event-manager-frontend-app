@@ -26,7 +26,7 @@ const EventList: React.FC = () => {
     };
     return `${start.toLocaleDateString(i18n.language, options)} - ${end.toLocaleDateString(i18n.language, options)}`;
   };
-  
+  console.log('########### day{{count, plural, one {} other {s}}')
 
   return (
     <div className="min-h-screen p-4">
@@ -50,14 +50,14 @@ const EventList: React.FC = () => {
                     <span>{formatDateRange(event.startDate, event.endDate)}</span>
                   </div>
                   <div className="ml-6 text-sm">
-                    {t('events.list.duration', { count: event.numberOfDays  })}
+                    {t('events.list.duration', { count: event.numberOfDays })}
                   </div>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500">
                   <div className="flex items-center">
                     <Users className="h-4 w-4 mr-1" />
                     <span>
-                      {t('events.list.tickets', { count: event.tickets?.length || 0  })}
+                      {t('events.list.tickets', { count: event.tickets?.length || 0 })}
                     </span>
                   </div>
                 </div>
