@@ -27,18 +27,6 @@ const EventList: React.FC = () => {
     return `${start.toLocaleDateString(i18n.language, options)} - ${end.toLocaleDateString(i18n.language, options)}`;
   };
 
-  console.log(
-    "Duration Translation:",
-    t('events.list.duration', { count: events?.length })
-  );
-  
-  if (events && events.length > 0) {
-    console.log(
-      "Tickets Translation:",
-      t('events.list.tickets', { count: events[0].tickets?.length })
-    );
-  }
-
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-7xl mx-auto">
