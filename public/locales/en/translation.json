@@ -57,7 +57,8 @@
       "details": {
             "title": "Event Ticket",
             "qrCodeAlt": "Ticket QR Code",
-            "duration": "{{count}} day{{count, plural, one {} other {s}}}",
+            "duration_one": "{{count}} day",
+            "duration_other": "{{count}} days",
             "ticketNumber": "Ticket #{{number}}",
             "attendedAt": "Attended at: {{time}}",
             "scanInstructions": "Don't miss out! Scan the QR code at the venue.",
