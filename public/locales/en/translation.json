@@ -18,7 +18,8 @@
         "submit": "Sign in",
         "submitting": "Signing in...",
         "success": "Logged in successfully",
-        "error": "Invalid credentials"
+        "error": "Invalid credentials",
+        "logout": "Logout"
       },
       "register": {
         "title": "Register",
@@ -33,8 +34,9 @@
     },
     "events": {
       "list": {
-        "title": "Events",
-        "noEvents": "No events found"
+        "error": "Error loading events",
+        "duration": "({{days}} day{{count, plural, one {} other {s}}})",
+        "tickets": "{{count}} ticket{{count, plural, one {} other {s}}}"
       },
       "create": {
         "title": "Create New Event",
@@ -50,7 +52,6 @@
       },
       "details": {
             "title": "Event Ticket",
-            "notFound": "Ticket not found",
             "qrCodeAlt": "Ticket QR Code",
             "duration": "Duration: {{days}} day{{count, plural, one {} other {s}}}",
             "ticketNumber": "Ticket #{{number}}",
@@ -64,16 +65,43 @@
             "shareText": "Join me at {{title}}!\nLocation: {{address}}\nTicket #{{ticketNumber}}",
             "shareSuccess": "Ticket shared successfully!",
             "downloadSuccess": "PDF downloaded successfully!",
-            "shareError": "Failed to share ticket"
+            "shareError": "Failed to share ticket",
+            "notFound": "Event not found",
+            "eventDuration": "Event Duration",
+            "qrCode": "QR Code",
+            "tickets": "Tickets",
+            "generatingTicket": "Generating Ticket...",
+            "ticketCreated": "Ticket created successfully!",
+            "ticketCreationError": "Failed to create ticket. Please try again.",
+            "eventEndedMessage": "Event has ended - Cannot generate tickets",
+            "generateTicket": "Generate New Ticket",
+            "cannotGenerateTickets": "This event has ended. New tickets cannot be generated.",
+            "existingTickets": "Existing Tickets",
+            "attended": "Attended",
+            "notAttended": "Not attended",
+            "viewPrint": "View/Print"
         }
     },
     "tickets": {
       "details": {
         "title": "Event Ticket",
-        "ticketNumber": "Ticket #",
+        "ticketNumber": "Ticket #{{number}}",
         "scanInstructions": "Don't miss out! Scan the QR code at the venue.",
         "print": "Print Ticket",
-        "share": "Share PDF"
+        "share": "Share PDF",
+        "notFound": "Ticket not found",
+        "qrCodeAlt": "Ticket QR Code",
+        "duration": "Duration: {{days}} day{{count, plural, one {} other {s}}}",
+        "attendedAt": "Attended at: {{time}}",
+        "printButton": "Print Ticket",
+        "sharePdfButton": "Share PDF",
+        "generatingPdf": "Generating PDF...",
+        "pdfGenerationError": "Failed to generate PDF",
+        "shareTitle": "Ticket for {{title}}",
+        "shareText": "Join me at {{title}}!\nLocation: {{address}}\nTicket #{{ticketNumber}}",
+        "shareSuccess": "Ticket shared successfully!",
+        "downloadSuccess": "PDF downloaded successfully!",
+        "shareError": "Failed to share ticket"
       },
       "scan": {
         "title": "Scan QR Code",
@@ -94,5 +122,11 @@
       "email": "Please enter a valid email address",
       "minLength": "Must be at least {{min}} characters",
       "url": "Please enter a valid URL"
+    },
+    "footer": {
+        "copyright": "© {{year}} Event Manager",
+        "by": "by",
+        "rights": "All rights reserved. Unauthorized use prohibited.",
+        "emailLabel": "Email Aleem Mohammed"
     }
   }

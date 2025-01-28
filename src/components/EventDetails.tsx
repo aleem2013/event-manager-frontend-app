@@ -5,20 +5,25 @@ import { MapPin, Printer, Loader2, Clock, Calendar } from 'lucide-react';
 import { fetchEventDetails, createTicket } from '../api/events';
 import toast from 'react-hot-toast';
 import LoadingSpinner from './LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
-const LoadingOverlay = () => (
-  <div 
-    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity duration-300 flex items-center justify-center"
-    aria-hidden="true"
-  >
-    <div className="bg-white/10 rounded-lg p-8 flex flex-col items-center space-y-4 animate-in fade-in zoom-in duration-300">
-      <Loader2 className="h-12 w-12 text-white animate-spin" />
-      <p className="text-white text-lg font-medium">Generating Ticket...</p>
+const LoadingOverlay = () => {
+  const { t } = useTranslation();
+  return (
+    <div 
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 transition-opacity duration-300 flex items-center justify-center"
+      aria-hidden="true"
+    >
+      <div className="bg-white/10 rounded-lg p-8 flex flex-col items-center space-y-4 animate-in fade-in zoom-in duration-300">
+        <Loader2 className="h-12 w-12 text-white animate-spin" />
+        <p className="text-white text-lg font-medium">{t('events.details.generatingTicket')}</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const EventDetails: React.FC = () => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -29,19 +34,14 @@ const EventDetails: React.FC = () => {
     queryFn: () => fetchEventDetails(id!),
   });
 
-  // Enhanced mutation
   const createTicketMutation = useMutation({
     mutationFn: createTicket,
     onMutate: () => {
-      // Show loading overlay when mutation starts
       setShowLoadingOverlay(true);
     },
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ['event', id] });
-      
-      // Show success toast with larger text
-      toast.success('Ticket created successfully!', {
+      toast.success(t('events.details.ticketCreated'), {
         style: {
           fontSize: '1.2rem',
           padding: '16px',
@@ -50,34 +50,21 @@ const EventDetails: React.FC = () => {
       });
     },
     onSettled: () => {
-      // Hide loading overlay when mutation completes (success or error)
       setShowLoadingOverlay(false);
     },
     onError: () => {
-      // Handle error case
-      toast.error('Failed to create ticket. Please try again.');
+      toast.error(t('events.details.ticketCreationError'));
     },
   });
 
-  /*
-  const createTicketMutation = useMutation({
-    mutationFn: createTicket,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['event', id] });
-      toast.success('Ticket created successfully!');
-    },
-  });*/
+  if (isLoading) return <LoadingSpinner />;
+  if (!event) return <div>{t('events.details.notFound')}</div>;
 
-  if (isLoading) return <LoadingSpinner />;//<div>Loading...</div>;
-  if (!event) return <div>Event not found</div>;
-
-   // Format event dates
   const formatDateTime = (date: string) => {
     return new Date(date).toLocaleString();
   };
 
-   // Check if event has ended
-   const isEventEnded = () => {
+  const isEventEnded = () => {
     const currentDate = new Date();
     const eventEndDate = new Date(event.endDate);
     return currentDate > eventEndDate;
@@ -87,8 +74,8 @@ const EventDetails: React.FC = () => {
 
   return (
     <>
-    {showLoadingOverlay && <LoadingOverlay />}
-    <div className="min-h-screen p-4">
+      {showLoadingOverlay && <LoadingOverlay />}
+      <div className="min-h-screen p-4">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
             <h1 className="text-2xl font-bold mb-4 break-words">{event.title}</h1>
@@ -109,7 +96,7 @@ const EventDetails: React.FC = () => {
               <div className="flex items-center">
                 <Calendar className="h-5 w-5 mr-2 text-gray-500 flex-shrink-0" />
                 <div>
-                  <div className="font-medium">Event Duration</div>
+                  <div className="font-medium">{t('events.details.eventDuration')}</div>
                   <div className="text-gray-600">
                     {formatDateTime(event.startDate)} - {formatDateTime(event.endDate)}
                   </div>
@@ -118,37 +105,40 @@ const EventDetails: React.FC = () => {
               <div className="flex items-center">
                 <Clock className="h-5 w-5 mr-2 text-gray-500 flex-shrink-0" />
                 <div className="text-gray-600">
-                  {event.numberOfDays} day{event.numberOfDays > 1 ? 's' : ''}
+                  {t('events.details.duration', { 
+                    days: event.numberOfDays,
+                    count: event.numberOfDays 
+                  })}
                 </div>
               </div>
             </div>
 
             <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-2">QR Code</h2>
-              <img src={event.qrCodeUrl} alt="Event QR Code" className="w-48 h-48" />
+              <h2 className="text-xl font-semibold mb-2">{t('events.details.qrCode')}</h2>
+              <img src={event.qrCodeUrl} alt={t('events.details.qrCodeAlt')} className="w-48 h-48" />
             </div>
 
             <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-2">Tickets</h2>
+              <h2 className="text-xl font-semibold mb-2">{t('events.details.tickets')}</h2>
               <button
                 onClick={() => createTicketMutation.mutate(id!)}
                 disabled={isTicketGenerationDisabled}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed inline-flex items-center space-x-2"
               >
                 {isTicketGenerationDisabled 
-                  ? 'Event has ended - Cannot generate tickets' 
-                  : 'Generate New Ticket'
+                  ? t('events.details.eventEndedMessage')
+                  : t('events.details.generateTicket')
                 }
               </button>
               {isTicketGenerationDisabled && (
                 <p className="text-red-500 text-sm mt-2">
-                  This event has ended. New tickets cannot be generated.
+                  {t('events.details.cannotGenerateTickets')}
                 </p>
               )}
             </div>
 
             <div className="mt-4">
-              <h3 className="text-lg font-semibold mb-2">Existing Tickets</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('events.details.existingTickets')}</h3>
               <div className="grid gap-4">
                 {event.tickets?.map((ticket: any) => (
                   <div 
@@ -158,16 +148,16 @@ const EventDetails: React.FC = () => {
                   >
                     <div>
                       <span className="font-medium group-hover:text-blue-600 transition-colors">
-                        Ticket #{ticket.ticketNumber}
+                        {t('events.details.ticketNumber', { number: ticket.ticketNumber })}
                       </span>
                       <div className="text-sm text-gray-500">
-                        {ticket.attended ? 'Attended' : 'Not attended'}
+                        {ticket.attended ? t('events.details.attended') : t('events.details.notAttended')}
                       </div>
                     </div>
                     <div className="flex items-center">
                       {ticket.attended && (
                         <span className="text-green-600 text-sm break-words">
-                          {new Date(ticket.attendanceTimestamp).toLocaleString()}
+                          {formatDateTime(ticket.attendanceTimestamp)}
                         </span>
                       )}
                       <button 
@@ -178,7 +168,7 @@ const EventDetails: React.FC = () => {
                         }}
                       >
                         <Printer className="h-4 w-4 mr-1" />
-                        View/Print
+                        {t('events.details.viewPrint')}
                       </button>
                     </div>
                   </div>
@@ -187,7 +177,7 @@ const EventDetails: React.FC = () => {
             </div>
           </div>
         </div>
-    </div>
+      </div>
     </>
   );
 };

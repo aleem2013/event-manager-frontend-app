@@ -4,21 +4,23 @@ import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Users } from 'lucide-react';
 import { fetchEvents } from '../api/events';
 import LoadingSpinner from './LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 const EventList: React.FC = () => {
+  const { t } = useTranslation();
   const { data: events, isLoading, error } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents
   });
 
-  if (isLoading) return <LoadingSpinner />;//<div>Loading...</div>;
-  if (error) return <div>Error loading events</div>;
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <div>{t('events.list.error')}</div>;
 
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events?.map((event: any) => (
+          {events?.map((event) => (
             <Link
               key={event.id}
               to={`/events/${event.id}`}
@@ -34,13 +36,22 @@ const EventList: React.FC = () => {
                   <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
                   <span>
                     {new Date(event.startDate).toLocaleDateString()} - {new Date(event.endDate).toLocaleDateString()}
-                    <span className="ml-1 text-sm">({event.numberOfDays} days)</span>
+                    <span className="ml-1 text-sm">
+                      {t('events.list.duration', { 
+                        days: event.numberOfDays,
+                        count: event.numberOfDays 
+                      })}
+                    </span>
                   </span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500">
                   <div className="flex items-center">
                     <Users className="h-4 w-4 mr-1" />
-                    <span>{event.tickets?.length || 0} tickets</span>
+                    <span>
+                      {t('events.list.tickets', { 
+                        count: event.tickets?.length || 0 
+                      })}
+                    </span>
                   </div>
                 </div>
               </div>

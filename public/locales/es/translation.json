@@ -8,7 +8,9 @@
       "edit": "Editar",
       "delete": "Eliminar",
       "back": "Volver",
-      "backToEvent": "Volver al Evento"
+      "backToEvent": "Volver al Evento",
+      "days": "día{{count, plural, one {} other {s}}}",
+      "dateRange": "{{startDate}} - {{endDate}}"
     },
     "auth": {
       "login": {
@@ -33,8 +35,9 @@
     },
     "events": {
       "list": {
-        "title": "Eventos",
-        "noEvents": "No se encontraron eventos"
+        "error": "Error al cargar los eventos",
+        "duration": "({{days}} día{{count, plural, one {} other {s}}})",
+        "tickets": "{{count}} entrada{{count, plural, one {} other {s}}}"
       },
       "create": {
         "title": "Crear Nuevo Evento",
@@ -54,7 +57,20 @@
         "eventEnded": "El evento ha terminado - No se pueden generar entradas",
         "existingTickets": "Entradas Existentes",
         "attended": "Asistió",
-        "notAttended": "No asistió"
+        "notAttended": "No asistió",
+        "notFound": "Evento no encontrado",
+        "eventDuration": "Duración del Evento",
+        "duration": "{{days}} día{{count, plural, one {} other {s}}}",
+        "qrCode": "Código QR",
+        "qrCodeAlt": "Código QR del Evento",
+        "generatingTicket": "Generando Entrada...",
+        "ticketCreated": "¡Entrada creada exitosamente!",
+        "ticketCreationError": "Error al crear la entrada. Por favor, inténtalo de nuevo.",
+        "eventEndedMessage": "El evento ha terminado - No se pueden generar entradas",
+        "cannotGenerateTickets": "Este evento ha terminado. No se pueden generar nuevas entradas.",
+        "ticketNumber": "Entrada #{{number}}",
+        "viewPrint": "Ver/Imprimir",
+        "attendedAt": "Asistió el: {{time}}"
       }
     },
     "tickets": {
@@ -62,7 +78,7 @@
             "title": "Entrada del Evento",
             "notFound": "Entrada no encontrada",
             "qrCodeAlt": "Código QR de la entrada",
-            "duration": "Duración: {{days}} día{{count, plural, one {} other {s}}}",
+            "duration": "Duración: {{days}} día{{count, plural, one {} other {s}}",
             "ticketNumber": "Entrada #{{number}}",
             "attendedAt": "Asistió el: {{time}}",
             "scanInstructions": "¡No te lo pierdas! Escanea el código QR en el lugar del evento.",
@@ -95,5 +111,11 @@
       "email": "Por favor ingresa un correo electrónico válido",
       "minLength": "Debe tener al menos {{min}} caracteres",
       "url": "Por favor ingresa una URL válida"
-    }
+    },
+    "footer": {
+        "copyright": "© {{year}} Event Manager",
+        "by": "por",
+        "rights": "Todos los derechos reservados. Uso no autorizado prohibido.",
+        "emailLabel": "Enviar correo a Aleem Mohammed"
+     }
   }
