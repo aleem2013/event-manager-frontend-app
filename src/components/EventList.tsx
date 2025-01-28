@@ -26,6 +26,7 @@ const EventList: React.FC = () => {
     };
     return `${start.toLocaleDateString(i18n.language, options)} - ${end.toLocaleDateString(i18n.language, options)}`;
   };
+  
 
   return (
     <div className="min-h-screen p-4">
@@ -49,7 +50,7 @@ const EventList: React.FC = () => {
                     <span>{formatDateRange(event.startDate, event.endDate)}</span>
                   </div>
                   <div className="ml-6 text-sm">
-                    {t('events.list.duration', { 
+                    {t('events.list.duration', {
                       days: event.numberOfDays,
                       count: event.numberOfDays 
                     })}
