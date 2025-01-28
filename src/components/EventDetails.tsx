@@ -78,14 +78,14 @@ const EventDetails: React.FC = () => {
       {showLoadingOverlay && <LoadingOverlay />}
       <div className="min-h-screen p-4">
         <div className="max-w-4xl mx-auto">
-        <div className="mb-4">
-          <button
-            onClick={() => navigate('/events')}
-            className="text-blue-600 hover:text-blue-800 flex items-center gap-2"
-          >
-            ← {t('common.back')}
-          </button>
-      </div>
+          <div className="mb-4">
+            <button
+              onClick={() => navigate(`/events`)}
+              className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
+            >
+              ← {t('common.back')}
+            </button>
+          </div>
           <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
             <h1 className="text-2xl font-bold mb-4 break-words">{event.title}</h1>
             
