@@ -55,7 +55,14 @@ const EventDetails: React.FC = () => {
   if (!event) return <div>{t('events.details.notFound')}</div>;
 
   const formatDateTime = (date: string) => {
-    return new Date(date).toLocaleString(i18n.language);
+    const dateObj = new Date(date);
+    return dateObj.toLocaleString(i18n.language, {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   const isEventEnded = () => {
@@ -100,7 +107,6 @@ const EventDetails: React.FC = () => {
                 <Clock className="h-5 w-5 mr-2 text-gray-500 flex-shrink-0" />
                 <div className="text-gray-600">
                   {t('events.details.duration', { 
-                    days: event.numberOfDays,
                     count: event.numberOfDays 
                   })}
                 </div>
@@ -109,7 +115,11 @@ const EventDetails: React.FC = () => {
 
             <div className="mb-6">
               <h2 className="text-xl font-semibold mb-2">{t('events.details.qrCode')}</h2>
-              <img src={event.qrCodeUrl} alt={t('events.details.qrCodeAlt')} className="w-48 h-48" />
+              <img 
+                src={event.qrCodeUrl} 
+                alt={t('events.details.qrCodeAlt')} 
+                className="w-48 h-48"
+              />
             </div>
 
             <div className="mb-6">
@@ -145,10 +155,13 @@ const EventDetails: React.FC = () => {
                         {t('events.details.ticketNumber', { number: ticket.ticketNumber })}
                       </span>
                       <div className="text-sm text-gray-500">
-                        {ticket.attended ? t('events.details.attended') : t('events.details.notAttended')}
+                        {ticket.attended 
+                          ? t('events.details.attended') 
+                          : t('events.details.notAttended')
+                        }
                       </div>
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-4">
                       {ticket.attended && (
                         <span className="text-green-600 text-sm break-words">
                           {formatDateTime(ticket.attendanceTimestamp)}

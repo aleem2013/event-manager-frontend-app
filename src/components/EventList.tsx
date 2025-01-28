@@ -16,6 +16,17 @@ const EventList: React.FC = () => {
   if (isLoading) return <LoadingSpinner />;
   if (error) return <div>{t('events.list.error')}</div>;
 
+  const formatDateRange = (startDate: string, endDate: string) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'numeric', 
+      day: 'numeric'
+    };
+    return `${start.toLocaleDateString(i18n.language, options)} - ${end.toLocaleDateString(i18n.language, options)}`;
+  };
+
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-7xl mx-auto">
@@ -32,17 +43,17 @@ const EventList: React.FC = () => {
                   <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
                   <span className="break-words">{event.address}</span>
                 </div>
-                <div className="flex items-center text-gray-600 mb-2">
-                  <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
-                  <span>
-                    {new Date(event.startDate).toLocaleDateString(i18n.language)} - {new Date(event.endDate).toLocaleDateString(i18n.language)}
-                    <span className="ml-1 text-sm">
-                      {t('events.list.duration', { 
-                        days: event.numberOfDays,
-                        count: event.numberOfDays 
-                      })}
-                    </span>
-                  </span>
+                <div className="flex flex-col text-gray-600 mb-2">
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span>{formatDateRange(event.startDate, event.endDate)}</span>
+                  </div>
+                  <div className="ml-6 text-sm">
+                    {t('events.list.duration', { 
+                      days: event.numberOfDays,
+                      count: event.numberOfDays 
+                    })}
+                  </div>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500">
                   <div className="flex items-center">

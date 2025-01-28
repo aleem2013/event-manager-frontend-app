@@ -37,7 +37,7 @@
     "events": {
       "list": {
         "error": "Error loading events",
-        "duration": "({{days}} day{{count, plural, one {} other {s}}})",
+        "duration": "({{count}} day{{count, plural, one {} other {s}}})",
         "tickets": "{{count}} ticket{{count, plural, one {} other {s}}}"
       },
       "create": {
@@ -55,7 +55,7 @@
       "details": {
             "title": "Event Ticket",
             "qrCodeAlt": "Ticket QR Code",
-            "duration": "{{days}} day{{count, plural, one {} other {s}}}",
+            "duration": "{{count}} day{{count, plural, one {} other {s}}}",
             "ticketNumber": "Ticket #{{number}}",
             "attendedAt": "Attended at: {{time}}",
             "scanInstructions": "Don't miss out! Scan the QR code at the venue.",
