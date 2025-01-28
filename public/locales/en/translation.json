@@ -37,8 +37,10 @@
     "events": {
       "list": {
         "error": "Error loading events",
-        "duration": "{{count, plural, one {# day} other {# days}}}",
-        "tickets": "{{count, plural, one {# ticket} other {# tickets}}}"
+        "duration_one": "{{count}} day",
+        "duration_other": "{{count}} days",
+        "tickets_one": "{{count}} ticket",
+        "tickets_other": "{{count}} tickets"
       },
       "create": {
         "title": "Create New Event",
