@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ const Login: React.FC = () => {
   
   const from = (location.state as any)?.from?.pathname || '/';
 
-  // Redirect if already logged in
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }
@@ -24,10 +24,10 @@ const Login: React.FC = () => {
     onSuccess: (data) => {
       login(data.access_token);
       navigate(from, { replace: true });
-      toast.success('Logged in successfully!');
+      toast.success(t('auth.login.success'));
     },
     onError: () => {
-      toast.error('Invalid credentials');
+      toast.error(t('auth.login.error'));
     },
   });
 
@@ -42,8 +42,13 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center py-6 px-4 sm:px-6 lg:px-8">
+      {/* Language Switcher */}
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
+
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900">
+        <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900 mb-8">
           {t('auth.login.title')}
         </h1>
       </div>
@@ -98,39 +103,5 @@ const Login: React.FC = () => {
     </div>
   );
 };
-
-
-    /*<div className="max-w-md mx-auto mt-8 bg-white rounded-lg shadow-md p-6">
-      <h1 className="text-2xl font-bold mb-6">Login</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Email</label>
-          <input
-            type="email"
-            name="email"
-            required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Password</label>
-          <input
-            type="password"
-            name="password"
-            required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={mutation.isPending}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50"
-        >
-          {mutation.isPending ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-    </div>
-  );
-};*/
 
 export default Login;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Home } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -16,14 +16,17 @@ const Navbar: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  if (isLoginPage) return null; // Don't render navbar on login page
+
   return (
     <nav className="bg-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16">
           {/* Logo and Desktop Navigation */}
           <div className="flex items-center">
-            <Link to="/" className="text-xl font-bold text-gray-800">
-              Event Manager
+            <Link to="/" className="flex items-center text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors">
+              <Home className="h-6 w-6 mr-2" />
+              <span>Event Manager</span>
             </Link>
             
             {/* Desktop Navigation */}
@@ -32,14 +35,14 @@ const Navbar: React.FC = () => {
                 {isAdmin() && (
                   <Link
                     to="/create-event"
-                    className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-blue-600"
+                    className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-blue-600 transition-colors"
                   >
                     {t('events.create.title')}
                   </Link>
                 )}
                 <Link
                   to="/scan"
-                  className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-blue-600"
+                  className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-blue-600 transition-colors"
                 >
                   {t('tickets.scan.title')}
                 </Link>
@@ -55,37 +58,28 @@ const Navbar: React.FC = () => {
                 {isAdmin() && (
                   <Link
                     to="/register"
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                    className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                   >
                     {t('auth.register.title')}
                   </Link>
                 )}
                 <button
                   onClick={logout}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 transition-colors"
                 >
-                   {t('auth.logout')}
+                  {t('auth.logout')}
                 </button>
               </div>
-            ) : (
-              !isLoginPage && (
-                <Link
-                  to="/login"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                >
-                   {t('auth.login.title')}
-                </Link>
-              )
-            )}
+            ) : null}
           </div>
 
           {/* Mobile menu button */}
-          {(
-            !isLoginPage && (
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              aria-expanded={isMenuOpen}
+              aria-label={isMenuOpen ? t('navbar.closeMenu') : t('navbar.openMenu')}
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -94,7 +88,6 @@ const Navbar: React.FC = () => {
               )}
             </button>
           </div>
-          ))}
         </div>
 
         {/* Mobile menu */}
@@ -108,7 +101,7 @@ const Navbar: React.FC = () => {
                 {isAdmin() && (
                   <Link
                     to="/create-event"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {t('events.create.title')}
@@ -116,7 +109,7 @@ const Navbar: React.FC = () => {
                 )}
                 <Link
                   to="/scan"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t('tickets.scan.title')}
@@ -130,10 +123,10 @@ const Navbar: React.FC = () => {
                   {isAdmin() && (
                     <Link
                       to="/register"
-                      className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
+                      className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                     {t('auth.register.title')}
+                      {t('auth.register.title')}
                     </Link>
                   )}
                   <button
@@ -141,22 +134,12 @@ const Navbar: React.FC = () => {
                       logout();
                       setIsMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 transition-colors"
                   >
-                    {t('auth.login.logout')}
+                    {t('auth.logout')}
                   </button>
                 </div>
-              ) : (
-                !isLoginPage && (
-                  <Link
-                    to="/login"
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {t('auth.login.title')}
-                  </Link>
-                )
-              )}
+              ) : null}
             </div>
           </div>
         )}

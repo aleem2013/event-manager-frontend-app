@@ -17,9 +17,9 @@
         "password": "Password",
         "submit": "Sign in",
         "submitting": "Signing in...",
-        "success": "Logged in successfully",
+        "success": "Logged in successfully!",
         "error": "Invalid credentials",
-        "logout": "Logout"
+        "language": "Select language"
       },
       "register": {
         "title": "Register",
@@ -35,8 +35,8 @@
     "events": {
       "list": {
         "error": "Error loading events",
-        "duration": "({{days}} day{{count, plural, one {} other {s}}})",
-        "tickets": "{{count}} ticket{{count, plural, one {} other {s}}}"
+        "duration": "({{days}} day)",
+        "tickets": "{{count}} ticket"
       },
       "create": {
         "title": "Create New Event",
@@ -53,7 +53,7 @@
       "details": {
             "title": "Event Ticket",
             "qrCodeAlt": "Ticket QR Code",
-            "duration": "Duration: {{days}} day{{count, plural, one {} other {s}}}",
+            "duration": "Duration: {{days}} day",
             "ticketNumber": "Ticket #{{number}}",
             "attendedAt": "Attended at: {{time}}",
             "scanInstructions": "Don't miss out! Scan the QR code at the venue.",

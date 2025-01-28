@@ -9,7 +9,7 @@
       "delete": "Eliminar",
       "back": "Volver",
       "backToEvent": "Volver al Evento",
-      "days": "día{{count, plural, one {} other {s}}}",
+      "days": "día{{count, plural, one {} other {s}}",
       "dateRange": "{{startDate}} - {{endDate}}"
     },
     "auth": {
