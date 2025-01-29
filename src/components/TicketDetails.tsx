@@ -132,10 +132,7 @@ const TicketDetails: React.FC = () => {
               {new Date(ticket.event.startDate).toLocaleString()} - {new Date(ticket.event.endDate).toLocaleString()}
             </p>
             <p className="text-gray-600">
-              {t('tickets.details.duration', {
-                days: ticket.event.numberOfDays,
-                count: ticket.event.numberOfDays 
-              })}
+              {t('tickets.details.duration', { count: ticket.event.numberOfDays })}
             </p>
           </div>
 
