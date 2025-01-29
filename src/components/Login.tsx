@@ -13,7 +13,7 @@ import {
   FormInput, 
   PrimaryButton, 
   SectionHeader 
-} from './ThemeComponents';
+} from './theme/ThemeComponents';
 
 const Login = () => {
   const navigate = useNavigate();
