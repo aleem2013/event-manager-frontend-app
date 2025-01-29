@@ -4,11 +4,29 @@ import { useMutation } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { markAttendance, getTicketDetailsByTicketId } from '../api/events';
 import toast from 'react-hot-toast';
-import { Loader2 } from 'lucide-react';
-import { errorToastConfig } from '../utils/toast-config';
+import { Loader2, Scan, Camera, ShieldCheck, AlertCircle, Sparkles } from 'lucide-react';
+import { successToastConfig, errorToastConfig, warningToastConfig } from '../utils/toast-config';
 import { useTranslation } from 'react-i18next';
 
 const SCAN_COOLDOWN = 1000;
+
+const ProcessingOverlay = ({ message }: { message: string }) => (
+  <div className="flex flex-col items-center justify-center space-y-4 h-full">
+    <div className="relative">
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 via-blue-600 to-violet-600 
+                    animate-spin duration-700" style={{ padding: '3px' }}>
+        <div className="w-full h-full bg-black/20 backdrop-blur-xl rounded-full" />
+      </div>
+      <Loader2 className="h-12 w-12 text-white relative animate-spin duration-700" />
+    </div>
+    <div className="text-center">
+      <p className="text-lg font-medium text-transparent bg-clip-text bg-gradient-to-r 
+                   from-purple-600 via-blue-600 to-violet-600 animate-pulse">
+        {message}
+      </p>
+    </div>
+  </div>
+);
 
 const ScanQR: React.FC = () => {
   const [scanning, setScanning] = useState(true);
@@ -19,38 +37,25 @@ const ScanQR: React.FC = () => {
   const scannerRef = useRef<any>(null);
   const { t } = useTranslation();
 
-  // Query to fetch ticket details
-  /*const ticketQuery = useQuery({
-    queryKey: ['ticket', currentTicketId],
-    queryFn: async () => {
-      if (!currentTicketId) return null;
-      try {
-        // We need to pass both eventId and ticketId, but since we don't have eventId in QR,
-        // we'll modify the backend to accept just ticketId if needed
-        return await getTicketDetailsByTicketId(currentTicketId);
-      } catch (error) {
-        console.error('Error fetching ticket details:', error);
-        throw error;
-      }
-    },
-    enabled: !!currentTicketId,
-  });*/
-  console.log(currentTicketId);
   const mutation = useMutation({
     mutationFn: markAttendance,
     onSuccess: () => {
-      toast.success(t('tickets.scan.success'));
+      toast.success(t('tickets.scan.success'), {
+        icon: '✨',
+        style: {
+          background: '#10B981',
+          color: '#FFFFFF',
+          padding: '16px',
+          borderRadius: '8px'
+        }
+      });
       resetScannerState();
-      // setScanning(true);
-      // setCurrentTicketId(null);
-      // processingRef.current = false;
     },
     onError: () => {
-      toast.error(t('tickets.scan.error.generic'));
+      toast.error(t('tickets.scan.error.generic'), {
+        ...errorToastConfig,
+      });
       resetScannerState();
-      // setScanning(true);
-      // setCurrentTicketId(null);
-      // processingRef.current = false;
     },
   });
 
@@ -202,33 +207,93 @@ const ScanQR: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-      <h1 className="text-2xl font-bold mb-6">{t('tickets.scan.title')}</h1>
-      
-      {scanning ? (
-        <div className="aspect-square">
-          <QrScanner
-            ref={(instance) => {
-              scannerRef.current = instance; // Assign the instance to the ref
-            }}
-            onDecode={handleScan}
-            onError={handleError}
-            constraints={{
-              facingMode: 'environment'
-            }}
-            scanDelay={500} // Add a slight delay between scans
-          />
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-6">
+      <div className="max-w-md mx-auto">
+        {/* Header Section */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-4">
+            <Scan className="h-8 w-8 text-purple-600 mr-2" />
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              {t('tickets.scan.title')}
+            </h1>
+          </div>
+          <div className="w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 mx-auto rounded-full" />
         </div>
-      ) : (
-        // <div className="text-center">Processing...</div>
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-          <div className="text-center text-gray-600">{t('tickets.scan.processing')}</div>
+
+        {/* Scanner Container */}
+        <div className="bg-white/80 backdrop-blur-lg rounded-xl shadow-xl p-6 border border-gray-100">
+          <div className="relative">
+            {/* Scanner Frame */}
+            <div className="aspect-square overflow-hidden rounded-lg border-2 border-dashed border-purple-300 
+                          bg-gradient-to-br from-purple-50 to-blue-50">
+              {scanning ? (
+                <div className="relative w-full h-full">
+                  {/* Scanner Corner Decorations */}
+                  <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-purple-600 z-10" />
+                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-purple-600 z-10" />
+                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-purple-600 z-10" />
+                  <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-purple-600 z-10" />
+                  
+                  {/* Sparkle Decorations */}
+                  <Sparkles className="absolute top-2 right-2 h-6 w-6 text-yellow-400 animate-pulse z-10" />
+                  <Sparkles className="absolute bottom-2 left-2 h-4 w-4 text-blue-400 animate-pulse delay-300 z-10" />
+                  
+                  {/* QR Scanner */}
+                  <div className="absolute inset-0">
+                    <QrScanner
+                      ref={(instance) => {
+                        scannerRef.current = instance;
+                      }}
+                      onDecode={handleScan}
+                      onError={handleError}
+                      constraints={{
+                        facingMode: 'environment'
+                      }}
+                      scanDelay={500}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm">
+                  <ProcessingOverlay message={t('tickets.scan.processing')} />
+                </div>
+              )}
+            </div>
+
+            {/* Instructions Card */}
+            <div className="mt-6 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-md border border-purple-100">
+              <div className="flex items-start space-x-3">
+                <Camera className="h-5 w-5 text-purple-500 mt-1 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {t('tickets.scan.instructions')}
+                  </p>
+                  <div className="mt-3 flex items-center text-xs text-purple-600">
+                    <ShieldCheck className="h-4 w-4 mr-1" />
+                    <span>{t('tickets.scan.securityNote')}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Status Indicators */}
+            <div className="mt-4 flex items-center justify-center space-x-2">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-sm text-gray-600">
+                {scanning ? t('tickets.scan.ready') : t('tickets.scan.processing')}
+              </span>
+            </div>
+          </div>
         </div>
-      )}
-      <p className="mt-4 text-sm text-gray-500 text-center">
-      {t('tickets.scan.instructions')}
-      </p>
+
+        {/* Help Text */}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-500 flex items-center justify-center">
+            <AlertCircle className="h-4 w-4 mr-1" />
+            {t('tickets.scan.helpText')}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
