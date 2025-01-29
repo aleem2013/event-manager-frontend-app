@@ -61,6 +61,7 @@
   },
   "events": {
     "list": {
+      "title": "Próximos Eventos",
       "error": "Error al cargar los eventos",
       "duration_one": "{{count}} día",
       "duration_other": "{{count}} días",

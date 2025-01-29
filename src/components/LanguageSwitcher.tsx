@@ -1,34 +1,49 @@
-// src/components/LanguageSwitcher.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GlobeIcon } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
 
   const languages = [
     { code: 'en', name: 'English' },
     { code: 'es', name: 'Español' }
   ];
 
-  const changeLanguage = (language: string) => {
-    i18n.changeLanguage(language);
+  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
+
+  const toggleLanguage = (langCode: string) => {
+    i18n.changeLanguage(langCode);
+    setIsOpen(false);
   };
 
   return (
     <div className="relative">
-      <select
-        value={i18n.language}
-        onChange={(e) => changeLanguage(e.target.value)}
-        className="appearance-none bg-transparent border-none pr-8 pl-2 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md text-gray-700"
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-white/10 transition-colors"
       >
-        {languages.map((lang) => (
-          <option key={lang.code} value={lang.code}>
-            {lang.name}
-          </option>
-        ))}
-      </select>
-      <GlobeIcon className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
+        <Globe className="h-5 w-5 text-blue-100" />
+        <span className="text-blue-100 font-medium">{currentLanguage.name}</span>
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-lg py-1 z-50">
+          {languages.map((language) => (
+            <button
+              key={language.code}
+              onClick={() => toggleLanguage(language.code)}
+              className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 transition-colors
+                         ${language.code === currentLanguage.code 
+                           ? 'text-blue-600 font-medium bg-blue-50' 
+                           : 'text-gray-700'}`}
+            >
+              {language.name}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

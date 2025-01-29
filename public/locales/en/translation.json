@@ -61,6 +61,7 @@
   },
   "events": {
     "list": {
+      "title": "Upcoming Events",
       "error": "Error loading events",
       "duration_one": "{{count}} day",
       "duration_other": "{{count}} days",
