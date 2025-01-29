@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Desktop Auth Buttons */}
+          {/* Desktop Auth Buttons and Language Switcher */}
           <div className="hidden md:flex md:items-center md:space-x-4">
             <LanguageSwitcher />
             {isAuthenticated ? (
@@ -85,14 +85,17 @@ const Navbar: React.FC = () => {
                   className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white 
                            hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
-                  {t('auth.logout')}
+                  {t('auth.logout.title')}
                 </button>
               </div>
             ) : null}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex items-center md:hidden">
+          {/* Mobile Menu Controls */}
+          <div className="flex items-center space-x-4 md:hidden">
+            <div className="flex items-center">
+              <LanguageSwitcher />
+            </div>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-lg text-blue-100 hover:text-white hover:bg-white/10 transition-colors"
@@ -107,30 +110,29 @@ const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile Menu Content */}
         {isMenuOpen && (
           <div className="md:hidden pb-4 bg-gradient-to-b from-transparent to-blue-900/50 backdrop-blur-lg">
-            <div className="py-2">
-              <LanguageSwitcher />
-            </div>
             {isAuthenticated && (
               <div className="space-y-2 pt-2 pb-3">
                 {isAdmin() && (
                   <Link
                     to="/create-event"
                     className="block px-4 py-2 text-blue-100 hover:text-white hover:bg-white/10 rounded-lg 
-                             transition-colors"
+                             transition-colors flex items-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
+                    <Film className="h-4 w-4 mr-2" />
                     {t('events.create.title')}
                   </Link>
                 )}
                 <Link
                   to="/scan"
                   className="block px-4 py-2 text-blue-100 hover:text-white hover:bg-white/10 rounded-lg 
-                           transition-colors"
+                           transition-colors flex items-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  <Music className="h-4 w-4 mr-2" />
                   {t('tickets.scan.title')}
                 </Link>
               </div>
@@ -157,7 +159,7 @@ const Navbar: React.FC = () => {
                     className="block w-full px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 
                              text-white hover:from-purple-600 hover:to-blue-600 transition-colors"
                   >
-                    {t('auth.logout')}
+                    {t('auth.logout.title')}
                   </button>
                 </div>
               ) : null}
