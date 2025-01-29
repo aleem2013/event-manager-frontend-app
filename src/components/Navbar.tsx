@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu, X, Calendar } from 'lucide-react';
+import { Menu, X, Calendar, Sparkles, Film, Music } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -12,25 +12,33 @@ const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t } = useTranslation();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  if (isLoginPage) return null; // Don't render navbar on login page
+  if (isLoginPage) return null;
 
   return (
-    <nav className="bg-white shadow-lg">
+    <nav className="bg-gradient-to-r from-purple-900 via-blue-900 to-violet-900 shadow-lg relative">
+      {/* Decorative top border */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-400 via-blue-400 to-violet-400" />
+
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16">
           {/* Logo and Desktop Navigation */}
           <div className="flex items-center">
             <Link 
               to="/" 
-              className="flex items-center text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors"
+              className="flex items-center space-x-2 group"
               aria-label="EventPro Home"
             >
-              <Calendar className="h-8 w-8 text-blue-600 mr-2" />
-              <span>EventPro</span>
+              <div className="relative">
+                <Calendar className="h-8 w-8 text-white group-hover:text-blue-300 transition-colors" />
+                <Sparkles className="h-4 w-4 text-yellow-300 absolute -top-1 -right-1 animate-pulse" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r 
+                               from-blue-200 to-purple-200 group-hover:from-blue-100 group-hover:to-purple-100">
+                  EventPro
+                </span>
+                <span className="text-xs text-blue-200 group-hover:text-blue-100">Entertainment & Media</span>
+              </div>
             </Link>
             
             {/* Desktop Navigation */}
@@ -39,15 +47,19 @@ const Navbar: React.FC = () => {
                 {isAdmin() && (
                   <Link
                     to="/create-event"
-                    className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-blue-600 transition-colors"
+                    className="flex items-center px-3 py-1 text-blue-100 hover:text-white transition-colors
+                             rounded-full hover:bg-white/10"
                   >
+                    <Film className="h-4 w-4 mr-2" />
                     {t('events.create.title')}
                   </Link>
                 )}
                 <Link
                   to="/scan"
-                  className="inline-flex items-center px-1 pt-1 text-gray-900 hover:text-blue-600 transition-colors"
+                  className="flex items-center px-3 py-1 text-blue-100 hover:text-white transition-colors
+                           rounded-full hover:bg-white/10"
                 >
+                  <Music className="h-4 w-4 mr-2" />
                   {t('tickets.scan.title')}
                 </Link>
               </div>
@@ -62,14 +74,16 @@ const Navbar: React.FC = () => {
                 {isAdmin() && (
                   <Link
                     to="/register"
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 rounded-full text-blue-100 border border-blue-400/30 hover:bg-white/10 
+                             transition-all duration-300"
                   >
                     {t('auth.register.title')}
                   </Link>
                 )}
                 <button
                   onClick={logout}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white 
+                           hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl"
                 >
                   {t('auth.logout')}
                 </button>
@@ -80,10 +94,9 @@ const Navbar: React.FC = () => {
           {/* Mobile menu button */}
           <div className="flex items-center md:hidden">
             <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-lg text-blue-100 hover:text-white hover:bg-white/10 transition-colors"
               aria-expanded={isMenuOpen}
-              aria-label={isMenuOpen ? t('navbar.closeMenu') : t('navbar.openMenu')}
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -96,7 +109,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4">
+          <div className="md:hidden pb-4 bg-gradient-to-b from-transparent to-blue-900/50 backdrop-blur-lg">
             <div className="py-2">
               <LanguageSwitcher />
             </div>
@@ -105,7 +118,8 @@ const Navbar: React.FC = () => {
                 {isAdmin() && (
                   <Link
                     to="/create-event"
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 transition-colors"
+                    className="block px-4 py-2 text-blue-100 hover:text-white hover:bg-white/10 rounded-lg 
+                             transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {t('events.create.title')}
@@ -113,7 +127,8 @@ const Navbar: React.FC = () => {
                 )}
                 <Link
                   to="/scan"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 transition-colors"
+                  className="block px-4 py-2 text-blue-100 hover:text-white hover:bg-white/10 rounded-lg 
+                           transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t('tickets.scan.title')}
@@ -121,13 +136,14 @@ const Navbar: React.FC = () => {
               </div>
             )}
             
-            <div className="pt-4 border-t border-gray-200">
+            <div className="pt-4 border-t border-blue-800">
               {isAuthenticated ? (
-                <div className="space-y-2">
+                <div className="space-y-2 p-2">
                   {isAdmin() && (
                     <Link
                       to="/register"
-                      className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 transition-colors"
+                      className="block w-full text-center px-4 py-2 rounded-lg text-blue-100 border border-blue-400/30 
+                               hover:bg-white/10 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {t('auth.register.title')}
@@ -138,7 +154,8 @@ const Navbar: React.FC = () => {
                       logout();
                       setIsMenuOpen(false);
                     }}
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50 transition-colors"
+                    className="block w-full px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 
+                             text-white hover:from-purple-600 hover:to-blue-600 transition-colors"
                   >
                     {t('auth.logout')}
                   </button>
