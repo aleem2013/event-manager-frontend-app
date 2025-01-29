@@ -1,126 +1,196 @@
 {
-    "common": {
-      "loading": "Cargando...",
-      "error": "Se produjo un error",
-      "success": "Éxito",
-      "cancel": "Cancelar",
-      "save": "Guardar",
-      "edit": "Editar",
-      "delete": "Eliminar",
-      "back": "Volver",
-      "backToEvent": "Volver al Evento",
-      "days": "día{{count, plural, one {} other {s}}",
-      "dateRange": "{{startDate}} - {{endDate}}"
+  "common": {
+    "appName": "EventPro",
+    "subtitle": "Entretenimiento y Medios",
+    "loading": "Cargando...",
+    "error": "Se produjo un error",
+    "success": "Éxito",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Volver",
+    "backToEvent": "Volver al Evento",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "confirmation": "¿Estás seguro?",
+    "yes": "Sí",
+    "no": "No",
+    "days_one": "{{count}} día",
+    "days_other": "{{count}} días",
+    "dateRange": "{{startDate}} - {{endDate}}"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "welcome": "¡Bienvenido de nuevo! Por favor, introduce tus datos para iniciar sesión",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "emailPlaceholder": "Introduce tu correo electrónico",
+      "passwordPlaceholder": "Introduce tu contraseña",
+      "submit": "Iniciar sesión",
+      "submitting": "Iniciando sesión...",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUp": "Regístrate",
+      "success": "Sesión iniciada correctamente",
+      "error": "Credenciales inválidas"
     },
-    "auth": {
-      "login": {
-        "title": "Iniciar sesión en su cuenta",
-        "email": "Correo electrónico",
-        "password": "Contraseña",
-        "submit": "Iniciar sesión",
-        "submitting": "Iniciando sesión...",
-        "success": "Sesión iniciada correctamente",
-        "error": "Credenciales inválidas"
-      },
-      "logout": "Cerrar sesión",
-      "register": {
-        "title": "Registrarse",
-        "name": "Nombre",
-        "email": "Correo electrónico",
-        "password": "Contraseña",
-        "submit": "Registrarse",
-        "submitting": "Registrando...",
-        "success": "Registro exitoso",
-        "error": "Error en el registro"
+    "register": {
+      "title": "Crear Cuenta",
+      "welcome": "Comienza con tu cuenta",
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "namePlaceholder": "Introduce tu nombre completo",
+      "emailPlaceholder": "Introduce tu correo electrónico",
+      "passwordPlaceholder": "Crea una contraseña",
+      "confirmPasswordPlaceholder": "Confirma tu contraseña",
+      "submit": "Crear Cuenta",
+      "submitting": "Creando cuenta...",
+      "haveAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Inicia sesión",
+      "success": "Cuenta creada correctamente",
+      "error": "Error al crear la cuenta"
+    },
+    "logout": {
+      "title": "Cerrar Sesión",
+      "confirm": "¿Estás seguro de que quieres cerrar sesión?",
+      "success": "Sesión cerrada correctamente"
+    }
+  },
+  "events": {
+    "list": {
+      "error": "Error al cargar los eventos",
+      "duration_one": "{{count}} día",
+      "duration_other": "{{count}} días",
+      "tickets_one": "{{count}} entrada",
+      "tickets_other": "{{count}} entradas",
+      "noEvents": "No se encontraron eventos"
+    },
+    "create": {
+      "title": "Crear Nuevo Evento",
+      "eventTitle": "Título del Evento",
+      "address": "Dirección",
+      "googleMapsUrl": "URL de Google Maps",
+      "numberOfDays": "Número de Días",
+      "startDate": "Fecha y Hora de Inicio",
+      "endDate": "Fecha y Hora de Finalización",
+      "submit": "Crear Evento",
+      "submitting": "Creando...",
+      "success": "Evento creado exitosamente",
+      "error": "Error al crear el evento",
+      "enterDaysFirst": "Por favor, introduce primero el número de días",
+      "daysWarning": "El evento durará {{days}} días",
+      "endDateInfo": "La fecha de finalización se calcula automáticamente según la fecha de inicio y la duración",
+      "errors": {
+        "noDays": "Por favor, especifica el número de días",
+        "noStartDate": "Por favor, selecciona una fecha de inicio",
+        "invalidEndDate": "La fecha de finalización no puede ser anterior a la fecha de inicio"
       }
     },
-    "events": {
-      "list": {
-        "error": "Error al cargar los eventos",
-        "duration_one": "{{count}} día",
-        "duration_other": "{{count}} días",
-        "tickets_one": "{{count}} entrada",
-        "tickets_other": "{{count}} entradas"
-      },
-      "create": {
-        "title": "Crear Nuevo Evento",
-        "eventTitle": "Título del Evento",
-        "address": "Dirección",
-        "googleMapsUrl": "URL de Google Maps",
-        "numberOfDays": "Número de Días",
-        "startDate": "Fecha y Hora de Inicio",
-        "endDate": "Fecha y Hora de Finalización",
-        "submit": "Crear Evento",
-        "submitting": "Creando...",
-        "success": "Evento creado exitosamente"
-      },
-      "details": {
-        "tickets": "Entradas",
-        "generateTicket": "Generar Nueva Entrada",
-        "eventEnded": "El evento ha terminado - No se pueden generar entradas",
-        "existingTickets": "Entradas Existentes",
-        "attended": "Asistió",
-        "notAttended": "No asistió",
-        "notFound": "Evento no encontrado",
-        "eventDuration": "Duración del Evento",
-        "duration_one": "{{count}} día",
-        "duration_other": "{{count}} días",
-        "qrCode": "Código QR",
-        "qrCodeAlt": "Código QR del Evento",
-        "generatingTicket": "Generando Entrada...",
-        "ticketCreated": "¡Entrada creada exitosamente!",
-        "ticketCreationError": "Error al crear la entrada. Por favor, inténtalo de nuevo.",
-        "eventEndedMessage": "El evento ha terminado - No se pueden generar entradas",
-        "cannotGenerateTickets": "Este evento ha terminado. No se pueden generar nuevas entradas.",
-        "ticketNumber": "Entrada #{{number}}",
-        "viewPrint": "Ver/Imprimir",
-        "attendedAt": "Asistió el: {{time}}"
+    "details": {
+      "title": "Detalles del Evento",
+      "qrCodeAlt": "Código QR del evento",
+      "duration_one": "{{count}} día",
+      "duration_other": "{{count}} días",
+      "ticketNumber": "Entrada #{{number}}",
+      "attendedAt": "Asistió el: {{time}}",
+      "scanInstructions": "¡No te lo pierdas! Escanea el código QR en el lugar del evento.",
+      "printButton": "Imprimir Entrada",
+      "sharePdfButton": "Compartir PDF",
+      "generatingPdf": "Generando PDF...",
+      "pdfGenerationError": "Error al generar el PDF",
+      "shareTitle": "Entrada para {{title}}",
+      "shareText": "¡Únete a {{title}}!\nLugar: {{address}}\nEntrada #{{ticketNumber}}",
+      "shareSuccess": "¡Entrada compartida exitosamente!",
+      "downloadSuccess": "¡PDF descargado exitosamente!",
+      "shareError": "Error al compartir la entrada",
+      "notFound": "Evento no encontrado",
+      "eventDuration": "Duración del Evento",
+      "qrCode": "Código QR",
+      "tickets": "Entradas",
+      "generatingTicket": "Generando Entrada...",
+      "ticketCreated": "¡Entrada creada exitosamente!",
+      "ticketCreationError": "Error al crear la entrada. Por favor, inténtalo de nuevo.",
+      "eventEndedMessage": "El evento ha terminado - No se pueden generar entradas",
+      "generateTicket": "Generar Nueva Entrada",
+      "cannotGenerateTickets": "Este evento ha terminado. No se pueden generar nuevas entradas.",
+      "existingTickets": "Entradas Existentes",
+      "attended": "Asistió",
+      "notAttended": "No asistió",
+      "viewPrint": "Ver/Imprimir"
+    }
+  },
+  "tickets": {
+    "details": {
+      "title": "Entrada del Evento",
+      "ticketNumber": "Entrada #{{number}}",
+      "scanInstructions": "¡No te lo pierdas! Escanea el código QR en el lugar del evento.",
+      "print": "Imprimir Entrada",
+      "share": "Compartir PDF",
+      "notFound": "Entrada no encontrada",
+      "qrCodeAlt": "Código QR de la entrada",
+      "duration_one": "{{count}} día",
+      "duration_other": "{{count}} días",
+      "attendedAt": "Asistió el: {{time}}",
+      "printButton": "Imprimir Entrada",
+      "sharePdfButton": "Compartir PDF",
+      "generatingPdf": "Generando PDF...",
+      "pdfGenerationError": "Error al generar el PDF",
+      "shareTitle": "Entrada para {{title}}",
+      "shareText": "¡Únete a {{title}}!\nLugar: {{address}}\nEntrada #{{ticketNumber}}",
+      "shareSuccess": "¡Entrada compartida exitosamente!",
+      "downloadSuccess": "¡PDF descargado exitosamente!",
+      "shareError": "Error al compartir la entrada"
+    },
+    "scan": {
+      "title": "Escanear Código QR",
+      "processing": "Procesando...",
+      "instructions": "Coloca el código QR dentro del marco para escanear",
+      "success": "Asistencia marcada exitosamente",
+      "error": {
+        "generic": "Error al marcar la asistencia",
+        "invalid": "Código QR inválido",
+        "alreadyUsed": "Esta entrada ya ha sido utilizada",
+        "eventEnded": "Este evento ya ha terminado",
+        "eventNotStarted": "Este evento aún no ha comenzado. El evento comienza el: {{date}}",
+        "camera": "Error de cámara. Por favor verifica los permisos."
       }
+    }
+  },
+  "validation": {
+    "email": {
+      "required": "El correo electrónico es obligatorio",
+      "invalid": "Por favor, introduce un correo electrónico válido",
+      "exists": "Este correo electrónico ya está registrado",
+      "notFound": "Correo electrónico no encontrado"
     },
-    "tickets": {
-      "details": {
-            "title": "Entrada del Evento",
-            "notFound": "Entrada no encontrada",
-            "qrCodeAlt": "Código QR de la entrada",
-            "duration_one": "{{count}} día",
-            "duration_other": "{{count}} días",
-            "ticketNumber": "Entrada #{{number}}",
-            "attendedAt": "Asistió el: {{time}}",
-            "scanInstructions": "¡No te lo pierdas! Escanea el código QR en el lugar del evento.",
-            "printButton": "Imprimir Entrada",
-            "sharePdfButton": "Compartir PDF",
-            "generatingPdf": "Generando PDF...",
-            "pdfGenerationError": "Error al generar el PDF",
-            "shareTitle": "Entrada para {{title}}",
-            "shareText": "¡Únete a {{title}}!\nLugar: {{address}}\nEntrada #{{ticketNumber}}",
-            "shareSuccess": "¡Entrada compartida exitosamente!",
-            "downloadSuccess": "¡PDF descargado exitosamente!",
-            "shareError": "Error al compartir la entrada"
-        },
-      "scan": {
-        "title": "Escanear Código QR",
-        "processing": "Procesando...",
-        "instructions": "Coloca el código QR dentro del marco para escanear",
-        "success": "Asistencia marcada exitosamente",
-        "error": {
-          "invalid": "Código QR inválido",
-          "alreadyUsed": "Esta entrada ya ha sido utilizada",
-          "eventEnded": "Este evento ya ha terminado",
-          "eventNotStarted": "Este evento aún no ha comenzado",
-          "camera": "Error de cámara. Por favor verifica los permisos."
-        }
-      }
+    "password": {
+      "required": "La contraseña es obligatoria",
+      "tooShort": "La contraseña debe tener al menos 6 caracteres",
+      "tooWeak": "La contraseña debe contener al menos un número y un carácter especial",
+      "mismatch": "Las contraseñas no coinciden",
+      "incorrect": "Contraseña incorrecta"
     },
-    "validation": {
-      "required": "Este campo es requerido",
-      "email": "Por favor ingresa un correo electrónico válido",
-      "minLength": "Debe tener al menos {{min}} caracteres",
-      "url": "Por favor ingresa una URL válida"
+    "name": {
+      "required": "El nombre es obligatorio",
+      "tooShort": "El nombre debe tener al menos 2 caracteres",
+      "invalid": "Por favor, introduce un nombre válido"
     },
-    "footer": {
-        "copyright": "© {{year}} Event Manager",
-        "by": "por",
-        "rights": "Todos los derechos reservados. Uso no autorizado prohibido.",
-        "emailLabel": "Enviar correo a Aleem Mohammed"
-     }
+    "general": {
+      "required": "Este campo es obligatorio",
+      "invalid": "Por favor, introduce un valor válido",
+      "success": "Validación exitosa",
+      "error": "Por favor, revisa tu entrada"
+    },
+    "url": "Por favor, introduce una URL válida",
+    "minLength": "Debe tener al menos {{min}} caracteres"
+  },
+  "footer": {
+    "copyright": "© {{year}} Event Manager",
+    "by": "por",
+    "rights": "Todos los derechos reservados. Uso no autorizado prohibido.",
+    "emailLabel": "Enviar correo a Aleem Mohammed"
   }
+}

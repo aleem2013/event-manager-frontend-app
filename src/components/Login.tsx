@@ -1,3 +1,5 @@
+// src/components/Login.tsx
+import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { login as loginApi } from '../api/auth';
 import { Navigate, useNavigate } from 'react-router-dom';
@@ -15,11 +17,18 @@ import {
   SectionHeader 
 } from './theme/ThemeComponents';
 
-const Login = () => {
+interface FormErrors {
+  email?: string;
+  password?: string;
+}
+
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isAuthenticated } = useAuth();
   const { t } = useTranslation();
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState<FormErrors>({});
   
   const from = (location.state as any)?.from?.pathname || '/';
 
@@ -39,13 +48,45 @@ const Login = () => {
     },
   });
 
+  const validateEmail = (email: string) => {
+    if (!email) {
+      return t('validation.email.required');
+    }
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      return t('validation.email.invalid');
+    }
+  };
+
+  const validatePassword = (password: string) => {
+    if (!password) {
+      return t('validation.password.required');
+    }
+    if (password.length < 6) {
+      return t('validation.password.tooShort');
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    mutation.mutate({
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-    });
+    
+    // Validate all fields before submission
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.password);
+    
+    const newErrors: FormErrors = {
+      email: emailError,
+      password: passwordError,
+    };
+
+    setErrors(newErrors);
+
+    // Only proceed if there are no errors
+    if (!emailError && !passwordError) {
+      mutation.mutate({
+        email: formData.email,
+        password: formData.password,
+      });
+    }
   };
 
   return (
@@ -65,7 +106,7 @@ const Login = () => {
                   <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
                     EventPro
                   </span>
-                  <div className="text-xs text-gray-500">Entertainment & Media</div>
+                  <div className="text-xs text-gray-500">{t('common.subtitle')}</div>
                 </div>
               </div>
               <LanguageSwitcher />
@@ -90,26 +131,36 @@ const Login = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <FormInput
                     label={t('auth.login.email')}
-                    id="email"
-                    name="email"
                     type="email"
-                    autoComplete="email"
-                    required
+                    validateFn={validateEmail}
+                    error={errors.email}
+                    onChange={(value) => {
+                      setFormData(prev => ({ ...prev, email: value }));
+                      if (errors.email) {
+                        setErrors(prev => ({ ...prev, email: undefined }));
+                      }
+                    }}
+                    placeholder={t('auth.login.emailPlaceholder')}
                   />
 
                   <FormInput
                     label={t('auth.login.password')}
-                    id="password"
-                    name="password"
                     type="password"
-                    autoComplete="current-password"
-                    required
+                    validateFn={validatePassword}
+                    error={errors.password}
+                    onChange={(value) => {
+                      setFormData(prev => ({ ...prev, password: value }));
+                      if (errors.password) {
+                        setErrors(prev => ({ ...prev, password: undefined }));
+                      }
+                    }}
+                    placeholder={t('auth.login.passwordPlaceholder')}
                   />
 
                   <div>
                     <PrimaryButton
                       type="submit"
-                      disabled={mutation.isPending}
+                      disabled={mutation.isPending || !!errors.email || !!errors.password}
                       className="w-full flex justify-center"
                     >
                       {mutation.isPending ? (

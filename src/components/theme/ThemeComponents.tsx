@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { XCircle } from 'lucide-react';
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -9,9 +10,12 @@ interface ComponentProps {
   className?: string;
 }
 
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-}
+interface FormInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+    label?: string;
+    error?: string;
+    validateFn?: (value: string) => string | undefined;
+    onChange?: (value: string) => void;
+  }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   return (
@@ -66,23 +70,77 @@ export const NavbarWrapper: React.FC<ComponentProps> = ({ children }) => {
   );
 };
 
-export const FormInput: React.FC<FormInputProps> = ({ label, className = '', ...props }) => {
-  return (
-    <div className="space-y-1">
-      {label && (
-        <label className="block text-sm font-medium text-gray-700">
-          {label}
-        </label>
-      )}
-      <input
-        className={`block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
-                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                   transition-all duration-200 ${className}`}
-        {...props}
-      />
-    </div>
-  );
-};
+export const FormInput: React.FC<FormInputProps> = ({ 
+    label, 
+    className = '', 
+    error,
+    validateFn,
+    onChange,
+    ...props 
+  }) => {
+    const [touched, setTouched] = useState(false);
+    const [localError, setLocalError] = useState<string>();
+    const [value, setValue] = useState('');
+  
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = e.target.value;
+      setValue(newValue);
+      
+      if (validateFn) {
+        const validationError = validateFn(newValue);
+        setLocalError(validationError);
+      }
+      
+      if (onChange) {
+        onChange(newValue);
+      }
+    };
+  
+    const handleBlur = () => {
+      setTouched(true);
+      if (validateFn) {
+        const validationError = validateFn(value);
+        setLocalError(validationError);
+      }
+    };
+  
+    const displayError = touched && (error || localError);
+    const inputStyles = displayError
+      ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+      : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500';
+  
+    return (
+      <div className="space-y-1">
+        {label && (
+          <label className="block text-sm font-medium text-gray-700">
+            {label}
+          </label>
+        )}
+        <div className="relative">
+          <input
+            {...props}
+            value={value}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            className={`block w-full px-3 py-2 border rounded-md shadow-sm 
+                       transition-all duration-200 
+                       ${inputStyles}
+                       ${className}`}
+          />
+          {displayError && (
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+              <XCircle className="h-5 w-5 text-red-500" />
+            </div>
+          )}
+        </div>
+        {displayError && (
+          <p className="mt-1 text-sm text-red-600 animate-fadeIn">
+            {error || localError}
+          </p>
+        )}
+      </div>
+    );
+  };
 
 export const PageContainer: React.FC<ComponentProps> = ({ children, className = '' }) => {
   return (
