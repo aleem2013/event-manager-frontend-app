@@ -6,9 +6,16 @@ import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
-import { Calendar } from 'lucide-react';
+import { Calendar, Sparkles } from 'lucide-react';
+import { 
+  ThemeProvider, 
+  PageContainer, 
+  FormInput, 
+  PrimaryButton, 
+  SectionHeader 
+} from './ThemeComponents';
 
-const Login: React.FC = () => {
+const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login, isAuthenticated } = useAuth();
@@ -42,76 +49,86 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col py-6 px-4 sm:px-6 lg:px-8 bg-gray-50 relative">
-      {/* Top Bar with Logo and Language Switcher */}
-      <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center bg-white shadow-sm">
-        {/* Company Logo/Title */}
-        <div className="flex items-center space-x-2">
-          <Calendar className="h-8 w-8 text-blue-600" />
-          <span className="text-xl font-bold text-gray-800">EventPro</span>
+    <ThemeProvider>
+      <div className="min-h-screen flex flex-col py-6 px-4 sm:px-6 lg:px-8 relative">
+        {/* Enhanced Top Bar with Animation */}
+        <div className="absolute top-0 left-0 right-0 p-4">
+          <div className="max-w-7xl mx-auto">
+            <div className="bg-white bg-opacity-90 backdrop-blur-md shadow-lg rounded-lg p-4 flex justify-between items-center">
+              {/* Logo Section with Animation */}
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <Calendar className="h-8 w-8 text-blue-600 animate-pulse" />
+                  <Sparkles className="h-4 w-4 text-yellow-400 absolute -top-1 -right-1 animate-bounce" />
+                </div>
+                <div>
+                  <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                    EventPro
+                  </span>
+                  <div className="text-xs text-gray-500">Entertainment & Media</div>
+                </div>
+              </div>
+              <LanguageSwitcher />
+            </div>
+          </div>
         </div>
-        
-        {/* Language Switcher */}
-        <LanguageSwitcher />
-      </div>
 
-      {/* Main Content */}
-      <div className="flex-grow flex flex-col justify-center mt-16">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h1 className="text-center text-3xl font-bold tracking-tight text-gray-900 mb-8">
-            {t('auth.login.title')}
-          </h1>
-        </div>
+        {/* Main Content with Enhanced Styling */}
+        <PageContainer>
+          <div className="flex-grow flex flex-col justify-center mt-24">
+            <div className="sm:mx-auto sm:w-full sm:max-w-md">
+              <SectionHeader className="text-center text-3xl mb-2">
+                {t('auth.login.title')}
+              </SectionHeader>
+              <p className="text-center text-gray-600 text-sm mb-8">
+                {t('auth.login.welcome')}
+              </p>
+            </div>
 
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  {t('auth.login.email')}
-                </label>
-                <div className="mt-1">
-                  <input
+            <div className="sm:mx-auto sm:w-full sm:max-w-md">
+              <div className="bg-white/80 backdrop-blur-lg py-8 px-4 shadow-lg sm:rounded-xl sm:px-10 border border-gray-100">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <FormInput
+                    label={t('auth.login.email')}
                     id="email"
                     name="email"
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                   />
-                </div>
-              </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  {t('auth.login.password')}
-                </label>
-                <div className="mt-1">
-                  <input
+                  <FormInput
+                    label={t('auth.login.password')}
                     id="password"
                     name="password"
                     type="password"
                     autoComplete="current-password"
                     required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                   />
-                </div>
-              </div>
 
-              <div>
-                <button
-                  type="submit"
-                  disabled={mutation.isPending}
-                  className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  {mutation.isPending ? t('auth.login.submitting') : t('auth.login.submit')}
-                </button>
+                  <div>
+                    <PrimaryButton
+                      type="submit"
+                      disabled={mutation.isPending}
+                      className="w-full flex justify-center"
+                    >
+                      {mutation.isPending ? (
+                        <div className="flex items-center">
+                          <div className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                          {t('auth.login.submitting')}
+                        </div>
+                      ) : (
+                        t('auth.login.submit')
+                      )}
+                    </PrimaryButton>
+                  </div>
+                </form>
               </div>
-            </form>
+            </div>
           </div>
-        </div>
+        </PageContainer>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 
