@@ -80,7 +80,7 @@ const EventDetails: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="mb-4">
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate(`/`)}
               className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
             >
               ← {t('common.back')}
